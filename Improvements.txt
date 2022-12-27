@@ -1,0 +1,4 @@
+1. country adn antenna data is coming in the installation report. 
+Antenna details in the link settings section and country details in the  Site a and site B secton.
+
+2. A country code "No country" without EIRP and frequency limits is allowed. Also when in such situation a marker is placed the country checking takes place. 
