@@ -175,21 +175,18 @@ function inputMarker() {
         bounds.extend(marker.getPosition());
         markersarr.push(marker);
         reportMarkerArr.push(marker);
-        // Reading the values of lat long to feed to the validate function
-        var inputlatA = parseFloat(site1.split(",")[0]);
-        var inputlongA = parseFloat(site1.split(",")[1]);
-        var inputlatB = parseFloat(siteb.split(",")[0]);
-        var inputlongB = parseFloat(siteb.split(",")[1]);
-
-        validateAdd(inputlatA, inputlongA, inputlatB, inputlongB);
-        // drawPolyline();
         // add listener to redraw the polyline when markers position change
         marker.addListener("dragend", function () {
           addAddress();
-          // drawPolyline();
         });
       }
       map.fitBounds(bounds);
+      // Reading the values of lat long to feed to the validate function
+      var inputlatA = parseFloat(site1.split(",")[0]);
+      var inputlongA = parseFloat(site1.split(",")[1]);
+      var inputlatB = parseFloat(siteb.split(",")[0]);
+      var inputlongB = parseFloat(siteb.split(",")[1]);
+      validateAdd(inputlatA, inputlongA, inputlatB, inputlongB);
     }
   }
 }
@@ -349,7 +346,8 @@ function drawPolyline() {
   if (markersPositionArr.length == 2) {
     hopazimuth();
     calcFresnel();
-    calcTxPower();
+    deviceinfo();
+    //calcTxPower();
     // calceirp();
 
     elevator
