@@ -722,7 +722,7 @@ function populatefreq() {
     } else if (s1.value == 80) {
       var arr = [5210, 5290, 5530, 5610, 5775, 5775];
     }
-  } else if (ctry == "nd") {
+  } else if (groupND.includes(ctry)) {
     if (s1.value == 10) {
       var arr = [5155, 5825];
     } else if (s1.value == 20) {
