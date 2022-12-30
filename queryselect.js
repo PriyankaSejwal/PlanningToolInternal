@@ -67,6 +67,7 @@ document.getElementById("resetLink").addEventListener("click", function () {
   for (var i in reset) {
     reset[i].innerHTML = "";
   }
+  document.getElementById("reportbtn").disabled = true;
 
   //  Calling EIRP function to get the EIRP value lost during resetting the form.
   calceirp();
