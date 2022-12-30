@@ -942,7 +942,21 @@ function calcTxPower() {
 //   return parseFloat(distfac);
 // }
 
-// A function which returns tx power and rx power based on the channel bandwidth
+// Qeury Selector for when user changes the tx power, checking whether tx falls in 3-27.
+
+for (let i = 1; i <= 2; i++) {
+  document
+    .querySelector(`#transmitPower${i}`)
+    .addEventListener("change", function () {
+      var txpower = this.value;
+      if (txpower < 3 || txpower > 27) {
+        document.querySelector(`.tx${i}Alert2`).style.display = "block";
+      } else {
+        document.querySelector(`.tx${i}Alert2`).style.display = "none";
+        deviceinfo();
+      }
+    });
+}
 
 // A function to calculate RSL based on the radio selected by the user
 
