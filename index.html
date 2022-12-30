@@ -603,7 +603,7 @@
                         class="select"
                         onchange="selectedRadioA();"
                       >
-                        <optgroup label="Integrated Sector Antenna" class="optGroup" disabled>
+                        <optgroup label="Integrated Sector Antenna" class="optGroup">
                           <option value="17">ion4l1_BTS</option>
                           <option value="17">ion4xl1_BTS</option>
                           <option value="19">ion4l2_BTS</option>
@@ -887,14 +887,14 @@
                         <!-- Last Column -->
                         <tr align="center">
                           <th>link Availability</th>
-                          <td>
+                          <td id="availabilityValue">
                             <span
                               class="ng-binding empty resetTable"
                               id="linkAvailability"
                             ></span>
                             <span>%</span>
                           </td>
-                          <!-- <td style="display: none"></td> -->
+                          <td id="msg" style="display: none"></td>
                           </form>  
                         </tr>
                       </tbody>
