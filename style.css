@@ -313,7 +313,7 @@ tbody {
   display: block;
   width: 100%;
   height: auto;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
 }
 .chart {
@@ -328,10 +328,11 @@ tbody {
   /* min-width: 200px;
  */
   /* width: 100%; */
-  width: fit-content; /* width fit -content worked to centet the google charts div */
+  width: fit-content; /* width fit -content worked to center the google charts div */
   /* overflow-x: auto;
   overflow-y: hidden; */
   margin: 0 auto;
+  padding-bottom: 17px;
 }
 
 /* Adding Responsiveness */
