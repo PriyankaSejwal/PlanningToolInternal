@@ -449,11 +449,15 @@ function elevationchart() {
       document.getElementById("reportlos").innerHTML = "Yes";
       document.getElementById("los").style.color = "Green";
       polyline.setOptions({ strokeColor: "Green" });
+      document.querySelector("#availabilityValue").style.display = "table-cell";
+      document.querySelector("#msg").style.display = "none";
     } else {
       document.getElementById("los").innerHTML = "No";
       document.getElementById("reportlos").innerHTML = "No";
       document.getElementById("los").style.color = "Red";
       polyline.setOptions({ strokeColor: "Red" });
+      document.querySelector("#availabilityValue").style.display = "none";
+      document.querySelector("#msg").style.display = "table-cell";
       break;
     }
   }
