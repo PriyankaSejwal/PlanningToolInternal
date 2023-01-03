@@ -47,6 +47,7 @@ function buttonActive() {
 
 // Second function Validate populate
 function validatePopulate() {
+   document.getElementById("latLongBtn").disabled = true;
   var coordA = document.querySelector("#searchtowerA").value;
   var coordB = document.querySelector("#searchtowerB").value;
   // converting the coordinate into decimal format
