@@ -6,12 +6,16 @@
 //   createFreq(cf, optarr);
 // });
 
-// Channel bandwidth, frequency and eirp based on the country
+// Global Variables
 var eirp1;
 var eirp2;
 var eirp3;
 var eirp4;
 var ccode;
+var noisefloor, referencetable1, referencetable2;
+
+// Channel bandwidth, frequency and eirp based on the country
+
 function ctryChange() {
   // form for sidebar display block
   document.querySelector("#resetLink").style.visibility = "visible";
@@ -266,8 +270,6 @@ function ctryChange() {
 
   // function to generate the frequency list
   populatefreq();
-  // call function to know the max eirp value
-  calceirp();
 }
 
 // function to create new options in for the frequency dropdown
@@ -304,42 +306,61 @@ window.addEventListener("resize", function () {
 // Function to display the antenna gain column when ion4le is selected as the radio
 //  gets called when radio is changed
 function selectedRadioA() {
-  var r1 = document.getElementById("radio1");
-  var gain1 = document.getElementById("antgain1");
-  var loss1 = document.getElementById("cableLoss1");
-  document.getElementById("antgain1").value = r1.value;
-  var radioA = r1.options[r1.selectedIndex];
-  var option_group = radioA.parentNode;
-  var gain1alert = document.querySelector(".gain1Alert");
-  var empty = document.querySelectorAll(".empty");
-  console.log(radioA.innerHTML);
-  // When external antenna sleected then removing and adding certain functionalities.
-  if (option_group.label == "External Antenna") {
-    extRadio(gain1, loss1, gain1alert, empty);
+  // checking whether both the radios belong to the same family either UBAx or UB22
+  var radioType1 = $("#radio1 option:selected").html();
+  var radioType2 = $("#radio2 option:selected").html();
+  if (
+    (radioType1.includes("4l") && radioType2.includes("4l")) ||
+    (radioType1.includes("4xl") && radioType2.includes("4xl"))
+  ) {
+    var r1 = document.querySelector("#radio1");
+    var gain1 = document.querySelector("#antgain1");
+    var loss1 = document.getElementById("cableLoss1");
+    document.getElementById("antgain1").value = r1.value;
+    var radioA = r1.options[r1.selectedIndex];
+    var option_group = radioA.parentNode;
+    var gain1alert = document.querySelector(".gain1Alert");
+    var empty = document.querySelectorAll(".empty");
+    console.log(radioA.innerHTML);
+    // When external antenna selected then removing and adding certain functionalities.
+    if (option_group.label == "External Antenna") {
+      extRadio(gain1, loss1, gain1alert, empty);
+    } else {
+      otherRadio(gain1, loss1, gain1alert);
+      calcTxPower();
+    }
   } else {
-    otherRadio(gain1, loss1, gain1alert);
-    calcTxPower();
+    window.alert("Radios from same family required");
   }
 }
 
 // Function to display the antenna gain column when ion4le is selected as the radio
 //  gets called when radio is changed
 function selectedRadioB() {
-  var r2 = document.getElementById("radio2");
-  var gain2 = document.getElementById("antgain2");
-  var loss2 = document.getElementById("cableLoss2");
-  document.getElementById("antgain2").value = r2.value;
-  var radioB = r2.options[r2.selectedIndex];
-  var option_group = radioB.parentNode;
-  console.log(option_group.label);
-  var gain2alert = document.querySelector(".gain2Alert");
-  var empty = document.querySelectorAll(".empty");
-  // When ext antenna selected adding certain functionalities.
-  if (option_group.label == "External Antenna") {
-    extRadio(gain2, loss2, gain2alert, empty);
+  var radioType1 = $("#radio1 option:selected").html();
+  var radioType2 = $("#radio2 option:selected").html();
+  if (
+    (radioType1.includes("4l") && radioType2.includes("4l")) ||
+    (radioType1.includes("4xl") && radioType2.includes("4xl"))
+  ) {
+    var r2 = document.getElementById("radio2");
+    var gain2 = document.getElementById("antgain2");
+    var loss2 = document.getElementById("cableLoss2");
+    document.getElementById("antgain2").value = r2.value;
+    var radioB = r2.options[r2.selectedIndex];
+    var option_group = radioB.parentNode;
+    console.log(option_group.label);
+    var gain2alert = document.querySelector(".gain2Alert");
+    var empty = document.querySelectorAll(".empty");
+    // When ext antenna selected adding certain functionalities.
+    if (option_group.label == "External Antenna") {
+      extRadio(gain2, loss2, gain2alert, empty);
+    } else {
+      otherRadio(gain2, loss2, gain2alert);
+      calcTxPower();
+    }
   } else {
-    otherRadio(gain2, loss2, gain2alert);
-    calcTxPower();
+    window.alert("Radios from same family required");
   }
 }
 
@@ -428,6 +449,32 @@ function hopazimuth() {
   document.getElementById("reportHeadingB").innerHTML = angleb + " deg";
 
   // fresneleirp();
+}
+
+// function whihc will check the bandwidth and will give value of noise floor and table for UBAX and normal table
+function checkBandwidth() {
+  var bw = parseInt($("#channelBandwidth").val());
+  switch (bw) {
+    case 10:
+      noisefloor = 89;
+      referencetable1 = document.getElementById("10MHz");
+      referencetable2 = document.querySelector("#UBAX10MHz");
+      break;
+    case 20:
+      noisefloor = 89;
+      referencetable1 = document.getElementById("20MHz");
+      referencetable2 = document.querySelector("#UBAX20MHz");
+      break;
+    case 40:
+      noisefloor = 86;
+      referencetable1 = document.getElementById("40MHz");
+      referencetable2 = document.querySelector("#UBAX40MHz");
+      break;
+    case 80:
+      noisefloor = 83;
+      referencetable1 = document.getElementById("80MHz");
+      referencetable2 = document.querySelector("#UBAX80MHz");
+  }
 }
 
 // Function to populate the options into the channel frequency select query.
@@ -618,7 +665,6 @@ function populatefreq() {
   ];
   var groupKorea = ["kr"];
   var s1 = document.getElementById("channelBandwidth");
-  console.log("bandwidth value", s1.value);
   var s2 = document.getElementById("channelFrequency");
   s2.innerHTML = "";
   if (ctry == "in" || ctry == "gb") {
@@ -887,7 +933,6 @@ function calceirp() {
 
 // function to calculate the max transmit power based on eirp and antenna gain
 function calcTxPower() {
-  console.log("function called");
   var eirp = parseInt(document.getElementById("eirpMax").value);
   var antgainA = parseInt(document.getElementById("antgain1").value);
   var antgainB = parseInt(document.getElementById("antgain2").value);
@@ -925,23 +970,6 @@ function calcTxPower() {
   }
 }
 
-// function to check the factor depending on the link distance
-// function disfactor() {
-//   var distance = parseFloat(document.getElementById("linkDistance").innerHTML);
-//   if (distance <= 2) {
-//     var distfac = 4;
-//   } else if (distance <= 3) {
-//     var distfac = 5;
-//   } else if (distance <= 5) {
-//     var distfac = 6;
-//   } else if (distance <= 8) {
-//     var distfac = 7;
-//   } else {
-//     var distfac = 8;
-//   }
-//   return parseFloat(distfac);
-// }
-
 // Qeury Selector for when user changes the tx power, checking whether tx falls in 3-27.
 
 for (let i = 1; i <= 2; i++) {
@@ -958,153 +986,243 @@ for (let i = 1; i <= 2; i++) {
     });
 }
 
-// A function to calculate RSL based on the radio selected by the user
+// New deviceinfo function
 
 function deviceinfo() {
+  // calling function checkBandwidth
+  checkBandwidth();
   var dist = parseFloat(document.getElementById("linkDistance").innerHTML);
   if (document.getElementById("linkDistance").innerHTML != "") {
-    var bandwidth = parseFloat(
-      document.getElementById("channelBandwidth").value
-    );
     var f = document.getElementById("channelFrequency");
     var freq = parseFloat(f.options[f.selectedIndex].innerHTML);
     var loss1 = parseInt(document.getElementById("cableLoss1").value);
     var loss2 = parseInt(document.getElementById("cableLoss2").value);
-    var eirp = parseInt(document.getElementById("eirpMax").value);
     var radio1 = parseInt(document.getElementById("radio1").value);
     var radio2 = parseInt(document.getElementById("radio2").value);
     var tx1 = parseInt(document.getElementById("transmitPower1").value);
     var tx2 = parseInt(document.getElementById("transmitPower2").value);
-    var rsl1;
-    var rsl2;
+    // calculate EIRP value
+    var eirpValue = [
+      radio1 + radio2 + tx2 - loss1 - loss2,
+      radio1 + radio2 + tx1 - loss1 - loss2,
+    ];
+    // a loop which will forward for site A and Site B and put calculated value
+    for (let i = 1; i <= 2; i++) {
+      var rsl = (
+        eirpValue[i - 1] -
+        (20 * Math.log10(dist) + 20 * Math.log10(freq / 1000) + 92.45)
+      ).toFixed(2);
 
-    if (bandwidth == 10) {
-      var additional_loss = 0;
-    } else if (bandwidth == 20) {
-      var additional_loss = 0;
-    } else if (bandwidth == 40) {
-      var additional_loss = 2;
-    } else if (bandwidth == 80) {
-      var additional_loss = 3;
+      console.log(
+        "FSL: ",
+        20 * Math.log10(dist) + 20 * Math.log10(freq / 1000) + 92.45
+      );
+
+      // SNR
+      var snr = (parseFloat(rsl) + parseFloat(noisefloor)).toFixed(2);
+
+      // checking the radio if ubax or not
+      var radio = document.querySelector(`#radio${i}`);
+      radioName = radio.options[radio.selectedIndex].innerHTML;
+      if (radioName.includes("x")) {
+        var refertable = referencetable2;
+        console.log("includes x", refertable);
+      } else {
+        var refertable = referencetable1;
+        console.log(refertable);
+      }
+
+      // Fade Margin
+      fademargin =
+        parseFloat(rsl) -
+        parseFloat(refertable.rows[1].cells.item(0).innerHTML);
+
+      var rowlength = refertable.rows.length;
+      for (let t = 1; t < rowlength; t++) {
+        var min = refertable.rows[t].cells.item(0).innerHTML;
+        var max = refertable.rows[t].cells.item(1).innerHTML;
+        if (parseFloat(rsl) >= min && parseFloat(rsl) <= max) {
+          var mcs = refertable.rows[t].cells.item(2).innerHTML;
+          var modulation = refertable.rows[t].cells.item(3).innerHTML;
+          var fec = refertable.rows[t].cells.item(4).innerHTML;
+          var linkrate = refertable.rows[t].cells.item(5).innerHTML;
+          var throughput = refertable.rows[t].cells.item(6).innerHTML;
+        } else if (parseFloat(rsl) < min) {
+          break;
+        } else {
+          continue;
+        }
+      }
+
+      // Populating the link setting values
+      $(`#reportRadio${i}`).html(radioName);
+      $(`#reportloss${i}`).html(eval("loss" + i));
+      $(`#reporttx${i}`).html(eval("tx" + i));
+      $(`#reportAntGain${i}`).html(eval("radio" + i));
+
+      // Populating all the calculated value now in the fields
+      // RSL
+      document.getElementById(`rsl${i}`).innerHTML = rsl;
+      document.getElementById(`reportrsl${i}`).innerHTML = rsl;
+      // SNR
+      $(`#snr${i}`).html(snr);
+      $(`#reportsnr${i}`).html(snr);
+      // Fade Margin
+      $(`#fadeMargin${i}`).html(fademargin);
+      // MCS
+      $(`#mcs${i}`).html(mcs);
+      // Modulation
+      $(`#modulation${i}`).html(modulation);
+      // FEC
+      $(`#fec${i}`).html(fec);
+      // Link Rate
+      $(`#linkRate${i}`).html(linkrate);
+      // Throughput
+      $(`#throughput${i}`).html(throughput);
+      $(`#reportthroughput${i}`).html(throughput);
+
+      if (radioName.includes("CPE") && throughput > 300) {
+        $(`#throughput${i}`).html(throughput);
+        $(`#reportthroughput${i}`).html(300);
+      }
     }
-    rsl1 =
-      Math.round(
-        (tx2 +
-          radio1 +
-          radio2 -
-          loss1 -
-          loss2 -
-          additional_loss -
-          (20 * Math.log10(dist) + 20 * Math.log10(freq / 1000) + 92.45)) *
-          100
-      ) / 100;
-
-    rsl2 =
-      Math.round(
-        (tx1 +
-          radio1 +
-          radio2 -
-          loss1 -
-          loss2 -
-          additional_loss -
-          (20 * Math.log10(dist) + 20 * Math.log10(freq / 1000) + 92.45)) *
-          100
-      ) / 100;
-
-    // RSL populated at main page and report
-    document.getElementById("rsl1").innerHTML = rsl1;
-    document.getElementById("rsl2").innerHTML = rsl2;
-    // Report RSL
-    document.getElementById("reportrsl1").innerHTML = rsl1;
-    document.getElementById("reportrsl2").innerHTML = rsl2;
-
-    // Cable loss populated at report
-    document.getElementById("reportlossA").innerHTML = loss1;
-    document.getElementById("reportlossB").innerHTML = loss2;
-
-    // Antenna gain and transmit power populated at report
-    document.getElementById("txA").innerHTML = tx1;
-    document.getElementById("txB").innerHTML = tx2;
-    document.getElementById("antGainA").innerHTML = radio1;
-    document.getElementById("antGainB").innerHTML = radio2;
-    selectTable();
+    availability();
   }
 }
 
-function calculateRSL() {
-  if (document.getElementById("linkDistance").innerHTML != "") {
-    var radio1 = parseInt(document.getElementById("radio1").value);
-    var radio2 = parseInt(document.getElementById("radio2").value);
-    // remove after checking
-    // var radio1 = parseFloat(document.getElementById("antGain1").value);
-    // var radio2 = parseFloat(document.getElementById("antGain2").value);
+// A function to calculate RSL based on the radio selected by the user
 
-    var dist = parseFloat(document.getElementById("linkDistance").innerHTML);
-    var bandwidth = parseFloat(
-      document.getElementById("channelBandwidth").value
-    );
-    var f = document.getElementById("channelFrequency");
-    var freq = parseFloat(f.options[f.selectedIndex].innerHTML);
-    var loss1 = parseInt(document.getElementById("cableLoss1").value);
-    var loss2 = parseInt(document.getElementById("cableLoss2").value);
-    var eirp = parseInt(document.getElementById("eirpMax").value);
-    var tx1 = parseInt(document.getElementById("transmitPower1").value);
-    var tx2 = parseInt(document.getElementById("transmitPower2").value);
-    var rsl1;
-    var rsl2;
+// function deviceinfo() {
+//   var dist = parseFloat(document.getElementById("linkDistance").innerHTML);
+//   if (document.getElementById("linkDistance").innerHTML != "") {
+//     var f = document.getElementById("channelFrequency");
+//     var freq = parseFloat(f.options[f.selectedIndex].innerHTML);
+//     var loss1 = parseInt(document.getElementById("cableLoss1").value);
+//     var loss2 = parseInt(document.getElementById("cableLoss2").value);
+//     var eirp = parseInt(document.getElementById("eirpMax").value);
+//     var radio1 = parseInt(document.getElementById("radio1").value);
+//     var radio2 = parseInt(document.getElementById("radio2").value);
+//     var tx1 = parseInt(document.getElementById("transmitPower1").value);
+//     var tx2 = parseInt(document.getElementById("transmitPower2").value);
+//     var rsl1;
+//     var rsl2;
 
-    if (bandwidth == 10) {
-      var additional_loss = 0;
-    } else if (bandwidth == 20) {
-      var additional_loss = 0;
-    } else if (bandwidth == 40) {
-      var additional_loss = 2;
-    } else {
-      var additional_loss = 3;
-    }
-    rsl1 =
-      Math.round(
-        (tx2 +
-          radio1 +
-          radio2 -
-          loss1 -
-          loss2 -
-          additional_loss -
-          (20 * Math.log10(dist) + 20 * Math.log10(freq / 1000) + 92.45)) *
-          100
-      ) / 100;
+//     rsl1 =
+//       Math.round(
+//         (tx2 +
+//           radio1 +
+//           radio2 -
+//           loss1 -
+//           loss2 -
+//           (20 * Math.log10(dist) + 20 * Math.log10(freq / 1000) + 92.45)) *
+//           100
+//       ) / 100;
 
-    rsl2 =
-      Math.round(
-        (tx1 +
-          radio1 +
-          radio2 -
-          loss1 -
-          loss2 -
-          additional_loss -
-          (20 * Math.log10(dist) + 20 * Math.log10(freq / 1000) + 92.45)) *
-          100
-      ) / 100;
+//     rsl2 =
+//       Math.round(
+//         (tx1 +
+//           radio1 +
+//           radio2 -
+//           loss1 -
+//           loss2 -
+//           (20 * Math.log10(dist) + 20 * Math.log10(freq / 1000) + 92.45)) *
+//           100
+//       ) / 100;
 
-    // RSL populated at main page and report
-    document.getElementById("rsl1").innerHTML = rsl1;
-    document.getElementById("rsl2").innerHTML = rsl2;
-    // Report RSL
-    document.getElementById("reportrsl1").innerHTML = rsl1;
-    document.getElementById("reportrsl2").innerHTML = rsl2;
+//     // RSL populated at main page and report
+//     document.getElementById("rsl1").innerHTML = rsl1;
+//     document.getElementById("rsl2").innerHTML = rsl2;
+//     // Report RSL
+//     document.getElementById("reportrsl1").innerHTML = rsl1;
+//     document.getElementById("reportrsl2").innerHTML = rsl2;
 
-    // Cable loss populated at report
-    document.getElementById("reportlossA").innerHTML = loss1;
-    document.getElementById("reportlossB").innerHTML = loss2;
+//     // Cable loss populated at report
+//     document.getElementById("reportlossA").innerHTML = loss1;
+//     document.getElementById("reportlossB").innerHTML = loss2;
 
-    // Antenna gain and transmit power populated at report
-    document.getElementById("txA").innerHTML = tx1;
-    document.getElementById("txB").innerHTML = tx2;
-    document.getElementById("antGainA").innerHTML = radio1;
-    document.getElementById("antGainB").innerHTML = radio2;
-    selectTable();
-  }
-}
+//     // Antenna gain and transmit power populated at report
+//     document.getElementById("txA").innerHTML = tx1;
+//     document.getElementById("txB").innerHTML = tx2;
+//     document.getElementById("antGainA").innerHTML = radio1;
+//     document.getElementById("antGainB").innerHTML = radio2;
+//     selectTable();
+//   }
+// }
+
+// function calculateRSL() {
+//   if (document.getElementById("linkDistance").innerHTML != "") {
+//     var radio1 = parseInt(document.getElementById("radio1").value);
+//     var radio2 = parseInt(document.getElementById("radio2").value);
+//     // remove after checking
+//     // var radio1 = parseFloat(document.getElementById("antGain1").value);
+//     // var radio2 = parseFloat(document.getElementById("antGain2").value);
+
+//     var dist = parseFloat(document.getElementById("linkDistance").innerHTML);
+//     var bandwidth = parseFloat(
+//       document.getElementById("channelBandwidth").value
+//     );
+//     var f = document.getElementById("channelFrequency");
+//     var freq = parseFloat(f.options[f.selectedIndex].innerHTML);
+//     var loss1 = parseInt(document.getElementById("cableLoss1").value);
+//     var loss2 = parseInt(document.getElementById("cableLoss2").value);
+//     var eirp = parseInt(document.getElementById("eirpMax").value);
+//     var tx1 = parseInt(document.getElementById("transmitPower1").value);
+//     var tx2 = parseInt(document.getElementById("transmitPower2").value);
+//     var rsl1;
+//     var rsl2;
+
+//     if (bandwidth == 10) {
+//       var additional_loss = 0;
+//     } else if (bandwidth == 20) {
+//       var additional_loss = 0;
+//     } else if (bandwidth == 40) {
+//       var additional_loss = 2;
+//     } else {
+//       var additional_loss = 3;
+//     }
+//     rsl1 =
+//       Math.round(
+//         (tx2 +
+//           radio1 +
+//           radio2 -
+//           loss1 -
+//           loss2 -
+//           additional_loss -
+//           (20 * Math.log10(dist) + 20 * Math.log10(freq / 1000) + 92.45)) *
+//           100
+//       ) / 100;
+
+//     rsl2 =
+//       Math.round(
+//         (tx1 +
+//           radio1 +
+//           radio2 -
+//           loss1 -
+//           loss2 -
+//           additional_loss -
+//           (20 * Math.log10(dist) + 20 * Math.log10(freq / 1000) + 92.45)) *
+//           100
+//       ) / 100;
+
+//     // RSL populated at main page and report
+//     document.getElementById("rsl1").innerHTML = rsl1;
+//     document.getElementById("rsl2").innerHTML = rsl2;
+//     // Report RSL
+//     document.getElementById("reportrsl1").innerHTML = rsl1;
+//     document.getElementById("reportrsl2").innerHTML = rsl2;
+
+//     // Cable loss populated at report
+//     document.getElementById("reportlossA").innerHTML = loss1;
+//     document.getElementById("reportlossB").innerHTML = loss2;
+
+//     // Antenna gain and transmit power populated at report
+//     document.getElementById("txA").innerHTML = tx1;
+//     document.getElementById("txB").innerHTML = tx2;
+//     document.getElementById("antGainA").innerHTML = radio1;
+//     document.getElementById("antGainB").innerHTML = radio2;
+//     selectTable();
+//   }
+// }
 
 // A function to calculate the link throughtput based on the bandwidth selected by the user
 

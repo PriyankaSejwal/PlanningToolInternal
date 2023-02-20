@@ -1,28 +1,21 @@
 In this folder following changes have been made:-
-1. Max Transmit power is taken as min of allowed on the frequency band and maximum transmit power as per our UBRs.
-2. To deal with non limitation of max transmit power for UK for the first three bands. Kept that max tx value higher i.e. 32 than the allowed tx value as per our products. So that as program proceeds the max tx power as per the products is chosen.
-3. Included the country code nigeria made changes to three functions mainly - countrycode, populatefreq, fresneleirp.
 
+Latest:
 
+January 2023 onwards:
 
-1. Eirp and tx power based on the ptp and ptmp for countires - India, UK, and US.
-2. radio when ion4le there comes an alert that "this field cannot be empty for ant gain".
-3. frequency and bandwidth according to the three countries.
+1. Installation report when downloaded as an excel, format of the report is vertical now (previuosly it was horizontal). - january somewhere.
 
+2. Obsruction information can be entered in the chart by clicking on the pencil icon above the elevation chart. - january somewhere
 
-12-09-2022
-1. The tool throws an error if the selected country is not matching the country in the address.
-2. If country code is changed then address fields and latitude/longitude field gets empty and markers and polylines are removed from the map.
-3. Thetransmit power maximum limit is according to the calculated eirp -  gain + cable loss. it should be the minimum of the three tx powers. 
+3. When after entering the obstruction, if heights were changed at any end, the elevation chart w/o the obstruction data was getting displayed. Solved this issue by creating another
+    function which will get called if obs list has any data else normal elevation profile function will be called. - 14/02/2023
 
-7-10-2022
-1. hid the sidebar form which has the details of coordinate, frequnecy, bandwidth etc.
-2. only after country sleection this form appears to proceed.
+4. UBAX radios can lock upto MCS 11. - 13-02-2022.
 
-Doubts : 
-1. Cable loss to be zero if integrated antenna selected as there is no cable . When we have external antenna then there is cable used.
-2. EIRP for UK is Max 23 for half of the center frequencies. How to deal with that.
-3. Should center the map on the basis of country selected?
-4. Link Availability to consider rain in ptp or not?
-5. Antenna gain when ion4le is selected, user can put upto 34. Now 34 is above eirp 30 . so either to restrict the antenna gain for a maximum value?
+5. Obstruction data entered is considered above the ground level. Only height of the obstruction will be entered from the ground.
+    Previoulsy obstruction elevation from the sea level was to enter.  - 16-02-2023
+
+6. Only UBAX to UBAX link , UB22 to UB22 link feasibility supported. No heterogeneous radio links possible. - 16-02-2023
+
  

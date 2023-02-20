@@ -12,42 +12,9 @@ function buttonActive() {
   }
 }
 
-// function validatePopulate() {
-//   // Reverse geocoding for co-ords to address A
-//   var coordA = document.querySelector("#searchtowerA");
-//   var coord1 = coordA.value.split(",");
-//   lat1 = parseFloat(coord1[0]);
-//   long1 = parseFloat(coord1[1]);
-//   geocoder.geocode({ location: { lat: lat1, lng: long1 } }).then((response) => {
-//     if (response.results[0]) {
-//       add1.value = response.results[0].formatted_address;
-//     }
-//     if (country.value == "nd") {
-//       inputMarker();
-//     } else {
-//       validateAdd(lat1, long1, add1);
-//     }
-//   });
-//   // Reverse geocoding for co-ords to address B
-//   var coordB = document.querySelector("#searchtowerB");
-//   var coord2 = coordB.value.split(",");
-//   lat2 = parseFloat(coord2[0]);
-//   long2 = parseFloat(coord2[1]);
-//   geocoder.geocode({ location: { lat: lat2, lng: long2 } }).then((response) => {
-//     if (response.results[0]) {
-//       add2.value = response.results[0].formatted_address;
-//     }
-//     if (country.value == "nd") {
-//       inputMarker();
-//     } else {
-//       validateAdd(lat2, long2, add2);
-//     }
-//   });
-// }
-
 // Second function Validate populate
 function validatePopulate() {
-   document.getElementById("latLongBtn").disabled = true;
+  document.getElementById("latLongBtn").disabled = true;
   var coordA = document.querySelector("#searchtowerA").value;
   var coordB = document.querySelector("#searchtowerB").value;
   // converting the coordinate into decimal format
@@ -125,11 +92,13 @@ function reverseGeocoding(lat, long) {
 
 // FUNCTIONS
 function validateAdd(lata, longa, latb, longb) {
-  var countrycode = country.value;
+  var countrycode = document.getElementById("ctryCode").value;
   console.log(country.value, lata, longa);
   for (var [key, value] of Object.entries(countryArr)) {
+    // console.log(value);
     if (key == countrycode) {
       countrycode = key;
+      console.log(key);
       latL = parseFloat(value.split(",")[0]);
       latU = parseFloat(value.split(",")[1]);
       longL = parseFloat(value.split(",")[2]);

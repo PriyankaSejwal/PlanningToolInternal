@@ -1,5 +1,4 @@
 // Defining Global variables
-
 var map;
 var pos;
 var marker;
@@ -10,8 +9,10 @@ var latlongarr = [];
 var bounds;
 var reportbounds;
 var report;
-var yelev;
+var yelev, elevationArr;
 var geocoder;
+var chart;
+var joinedData2;
 
 google.load("visualization", "1", { packages: ["corechart"] });
 
@@ -101,19 +102,23 @@ function reportMarker() {
   // Populating values in the Site A and Site B tables
   var nameA = document.getElementById("siteAName").value;
   var nameB = document.getElementById("siteBName").value;
-  var adda = document.getElementById("add0").value;
-  var addb = document.getElementById("add1").value;
+  var adda = document.getElementById("add0").value.replaceAll(",", "");
+  var addb = document.getElementById("add1").value.replaceAll(",", "");
   var hta = document.getElementById("aheight1").value;
   var htb = document.getElementById("aheight2").value;
-  var coorda = document.getElementById("searchtowerA").value;
-  var coordb = document.getElementById("searchtowerB").value;
+  var coorda = document
+    .getElementById("searchtowerA")
+    .value.replaceAll(",", " ");
+  var coordb = document
+    .getElementById("searchtowerB")
+    .value.replaceAll(",", " ");
   // Populating the details in the installation report.
   document.getElementById("reportSiteAName").innerHTML = nameA;
   document.getElementById("reportSiteBName").innerHTML = nameB;
   document.getElementById("reportAddressA").innerHTML = adda;
   document.getElementById("reportAddressB").innerHTML = addb;
-  document.getElementById("reportCoordA").innerHTML = coorda + " ";
-  document.getElementById("reportCoordB").innerHTML = coordb + " ";
+  document.getElementById("reportCoordA").innerHTML = coorda;
+  document.getElementById("reportCoordB").innerHTML = coordb;
   document.getElementById("reportHeightA").innerHTML = hta + " m";
   document.getElementById("reportHeightB").innerHTML = htb + " m";
   var htAddA = document.getElementById("reportAddressA").offsetHeight;
@@ -175,53 +180,24 @@ function inputMarker() {
         bounds.extend(marker.getPosition());
         markersarr.push(marker);
         reportMarkerArr.push(marker);
+        // Reading the values of lat long to feed to the validate function
+        var inputlatA = parseFloat(site1.split(",")[0]);
+        var inputlongA = parseFloat(site1.split(",")[1]);
+        var inputlatB = parseFloat(siteb.split(",")[0]);
+        var inputlongB = parseFloat(siteb.split(",")[1]);
+
+        validateAdd(inputlatA, inputlongA, inputlatB, inputlongB);
+        // drawPolyline();
         // add listener to redraw the polyline when markers position change
         marker.addListener("dragend", function () {
           addAddress();
+          // drawPolyline();
         });
       }
       map.fitBounds(bounds);
-      // Reading the values of lat long to feed to the validate function
-      var inputlatA = parseFloat(site1.split(",")[0]);
-      var inputlongA = parseFloat(site1.split(",")[1]);
-      var inputlatB = parseFloat(siteb.split(",")[0]);
-      var inputlongB = parseFloat(siteb.split(",")[1]);
-      validateAdd(inputlatA, inputlongA, inputlatB, inputlongB);
     }
   }
 }
-
-// Second way with latA, latB, longA, longB
-// function inputMarker() {
-//   clearOverlays();
-//   // markersarr = [];
-//   latlongarr = [];
-//   var site1 = document.getElementById("searchtowerA").value;
-//   var siteb = document.getElementById("searchtowerB").value;
-//   if (site1 != "" && siteb != "") {
-//     bounds = new google.maps.LatLngBounds();
-//     for (i = 0; i < 2; i++) {
-//       marker = new google.maps.Marker({
-//         map: map,
-//         position: new google.maps.LatLng(
-//           parseFloat(lat[i]),
-//           parseFloat(long[i])
-//         ),
-//         draggable: true,
-//       });
-//       bounds.extend(marker.getPosition());
-//       markersarr.push(marker);
-//       reportMarkerArr.push(marker);
-//       drawPolyline();
-//       // add listener to redraw the polyline when markers position change
-//       marker.addListener("dragend", function () {
-//         addAddress();
-//         // drawPolyline();
-//       });
-//     }
-//     map.fitBounds(bounds);
-//   }
-// }
 
 // function to clear the markers on the map
 function clearOverlays() {
@@ -270,6 +246,7 @@ function addAddress() {
       if (ctry.value == "nd") {
         document.getElementById("add0").value =
           response.results[0].formatted_address;
+        drawPolyline();
       } else {
         if (response.results[0].formatted_address.includes(",")) {
           // To check for the country name
@@ -277,6 +254,8 @@ function addAddress() {
             // Populating address to the address field A
             document.getElementById("add0").value =
               response.results[0].formatted_address;
+
+            // drawPolyline();
           } else {
             alert(
               "The entered co-ordinate doesnot belong to the selected country."
@@ -347,7 +326,7 @@ function drawPolyline() {
     hopazimuth();
     calcFresnel();
     deviceinfo();
-    //calcTxPower();
+    // calcTxPower();
     // calceirp();
 
     elevator
@@ -362,8 +341,8 @@ function drawPolyline() {
         chartDiv.innerHTML =
           "Cannot show elevation: request failed because " + e;
       });
+    console.log("elevation api called at 371");
   }
-  console.log("elevation called at 371");
 }
 
 function plotElevation({ results }) {
@@ -379,7 +358,7 @@ function elevationchart() {
   var rad = parseFloat(document.getElementById("fresnelRadius").innerHTML); // minor axis radius fresnel radius
   var ht1 = parseFloat(document.getElementById("aheight1").value);
   var ht2 = parseFloat(document.getElementById("aheight2").value);
-  rad = (rad * 60) / 100;
+  // rad = (rad * 60) / 100;
   // Populating report elevation for Site A and Site B
   document.getElementById("reportElevationA").innerHTML = yelev[0].toFixed(2);
   document.getElementById("reportElevationB").innerHTML = yelev[99].toFixed(2);
@@ -430,7 +409,7 @@ function elevationchart() {
   }
 
   // data array for the elevation
-  arr = [];
+  elevationArr = [];
   distarray = [];
   stepsize = (dist * Math.pow(10, 3)) / 99;
   for (i = 0; i < 100; i++) {
@@ -439,7 +418,7 @@ function elevationchart() {
 
   //  Elevation data both x values and y values
   for (i = 0; i < 100; i++) {
-    arr.push([distarray[i], yelev[i]]);
+    elevationArr.push([distarray[i], yelev[i]]);
   }
 
   //  Checking for clear Line of Sight
@@ -473,7 +452,7 @@ function elevationchart() {
   var data = new google.visualization.DataTable();
   data.addColumn("number", "distance");
   data.addColumn("number", "line of sight");
-  data.addRows(arr);
+  data.addRows(elevationArr);
 
   // data 2 for half of the ellipse
   var data2 = new google.visualization.DataTable();
@@ -498,7 +477,7 @@ function elevationchart() {
   );
 
   // joined data for above and second half of ellipse
-  var joinedData2 = google.visualization.data.join(
+  joinedData2 = google.visualization.data.join(
     joinedData,
     data3,
     "full",
@@ -506,6 +485,8 @@ function elevationchart() {
     [1, 2],
     [1]
   );
+
+  console.log(joinedData2);
 
   // console.log(joinedData2);
 
@@ -529,13 +510,11 @@ function elevationchart() {
   };
 
   // Chart constructor for the main page of the website
-  var chart = new google.visualization.ComboChart(
-    document.getElementById("chart")
-  );
+  chart = new google.visualization.ComboChart(document.getElementById("chart"));
 
   // drawing the Main chart
   chart.draw(joinedData2, options);
 
-  // chart making visible, hids when cancel ptp pressed
+  // chart making visible, hidden when cancel ptp pressed
   document.querySelector(".elevation-chart").style.display = "block";
 }

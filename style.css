@@ -17,6 +17,7 @@ nav {
 } */
 /* Padding left and right to the navbar */
 
+/* Added padding nowhere in html */
 .added-padding {
   padding: 0px 30px;
 }
@@ -128,7 +129,7 @@ label {
   background: #fff;
   display: inline-block;
   height: 30px;
-  color: #54585a !important;
+  color: #54585a;
   -webkit-text-fill-color: #54585a;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
@@ -140,9 +141,9 @@ input:hover {
   /* background-color: #b7aacc; */
   color: #54585a !important;
 }
-input:hover::-webkit-input-placeholder {
+/* input:hover::-webkit-input-placeholder {
   color: #54585a;
-}
+} */
 
 /* Sidebar Section 2 */
 /* Select dropdowns */
@@ -198,7 +199,7 @@ input:hover::-webkit-input-placeholder {
 } */
 
 .top-margin {
-  margin-top: 20.5px;
+  margin-top: 21px;
 }
 strong {
   color: red;
@@ -303,6 +304,14 @@ tbody {
   color: #fff;
   /* cursor: wait; */
 }
+/* Edit option for the elevation chart */
+.editPencil {
+  display: block;
+  padding: 1px 15px 5px !important;
+}
+#editObstruction {
+  float: right;
+}
 
 /* Elevation Chart */
 .elevation-chart {
@@ -313,7 +322,7 @@ tbody {
   display: block;
   width: 100%;
   height: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: hidden;
 }
 .chart {
@@ -328,11 +337,10 @@ tbody {
   /* min-width: 200px;
  */
   /* width: 100%; */
-  width: fit-content; /* width fit -content worked to center the google charts div */
+  width: fit-content; /* width fit -content worked to centet the google charts div */
   /* overflow-x: auto;
   overflow-y: hidden; */
   margin: 0 auto;
-  padding-bottom: 17px;
 }
 
 /* Adding Responsiveness */
@@ -368,6 +376,71 @@ tbody {
   /* overflow-y: scroll; */
   overflow-x: hidden;
   background-color: #e6e7e8;
+}
+
+/* Obstruction pop up */
+.obstructionPopUp {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 8;
+  background-color: #f2f2f2;
+  height: 50%;
+  width: 38%;
+  top: 165px;
+  left: 33.3%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.obstructionHeader {
+  border-bottom: 0.1em solid #e6e6e6;
+  background-color: #fff;
+  height: 40px;
+  box-shadow: rgb(0 0 0 / 20%) 0px 2px 4px;
+}
+.obstruction-modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #350964;
+  padding: 8px;
+}
+.obstructionDiv {
+  padding: 0px 10px;
+  height: 90%;
+  overflow-y: scroll;
+}
+.submitObstruction {
+  text-align: center;
+}
+
+#obsUL {
+  list-style: none;
+  padding: 5px;
+}
+#obsUL li {
+  background: white;
+  position: relative;
+  padding: 8px 12px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  border-bottom: 1px solid #54585a;
+}
+
+.deleteObs {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 2px 12px;
+  color: #350964;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.deleteObs:hover {
+  background-color: #350964;
+  color: white;
 }
 
 /* Pop up report */
@@ -494,13 +567,14 @@ tbody {
   font-size: 14px;
 }
 #reportLinkName:hover,
-#reportLinkName:active {
-  border-radius: 3px;
-  border: 1px solid #d6d6d6;
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
-  background-color: #fff;
+#reportLinkName:active,
+#reportLinkName:disabled {
+  /* border-radius: 3px; */
+  /* border: 1px solid #d6d6d6; */
+  /* box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%); */
+  background-color: #fff !important;
   color: #350964 !important;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 /* .report_holder {
   display: flex;
