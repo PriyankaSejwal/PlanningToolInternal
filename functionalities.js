@@ -1074,7 +1074,7 @@ function deviceinfo() {
       // Modulation
       $(`#modulation${i}`).html(modulation);
       // FEC
-      $(`#fec${i}`).html(fec);
+      $(`#fec${i}`).html("'" + fec + "'");
       // Link Rate
       $(`#linkRate${i}`).html(linkrate);
       // Throughput
