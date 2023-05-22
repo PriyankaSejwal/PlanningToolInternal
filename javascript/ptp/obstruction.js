@@ -194,6 +194,26 @@ function ObsChartWithHt() {
   for (i = 0; i < 100; i++) {
     arr.push([distarray[i], yelevptp[i]]);
   }
+
+  //  Checking for clear Line of Sight
+  for (i = 0; i < yelevptp.length; i++) {
+    if (ellipsearray2[i][1] > yelevptp[i]) {
+      document.getElementById("los").innerHTML = "Yes";
+      document.getElementById("reportlos").innerHTML = "Yes";
+      document.getElementById("los").style.color = "Green";
+      ptppolyline.setOptions({ strokeColor: "Green" });
+      document.querySelector("#availabilityValue").style.display = "table-cell";
+      document.querySelector("#msg").style.display = "none";
+    } else {
+      document.getElementById("los").innerHTML = "No";
+      document.getElementById("reportlos").innerHTML = "No";
+      document.getElementById("los").style.color = "Red";
+      ptppolyline.setOptions({ strokeColor: "Red" });
+      document.querySelector("#availabilityValue").style.display = "none";
+      document.querySelector("#msg").style.display = "table-cell";
+      break;
+    }
+  }
   //  Calculating the Antenna Tilt / Vertical Angle and populating them in the Link Installation Report
   vertical_angle = Math.atan((startY - endY) / dist);
   document.getElementById("reportTiltA").innerHTML =

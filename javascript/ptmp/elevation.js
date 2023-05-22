@@ -5,20 +5,29 @@ google.load("visualization", "1", { packages: ["corechart"] });
 var vals;
 var allElevation = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
 var elevationArr = [[], [], [], [], [], [], [], [], [], [], [], []];
+var distelevation = [[], [], [], [], [], [], [], [], [], [], [], [], []];
+var alljoineddata = [[], [], [], [], [], [], [], [], [], [], [], [], []];
+var lowerellipsearray = [[], [], [], [], [], [], [], [], [], [], [], [], []];
 var promise = [];
 
 function getElevation(i) {
   vals = i;
   console.log(vals);
-  promise[i] = elevator.getElevationAlongPath({
+  promise[vals] = elevator.getElevationAlongPath({
     path: [marker[0].getPosition(), marker[i].getPosition()],
     samples: 100,
   });
-  promise[i].then(plotElevation);
+  console.log(promise[vals]);
+  promise[vals].then(plotElevation);
+  // if ($("#reportButton").is(":disabled")) {
+  //   promise[vals].then(plotElevation);
+  // } else {
+  //   updateAfterMasterChange();
+  // }
 }
 
 function plotElevation({ results }) {
-  console.log(results);
+  console.log(`For Slave ${vals}:  `, results);
   yelev = [];
   for (k = 0; k < results.length; k++) {
     yelev.push(results[k].elevation);
@@ -79,6 +88,9 @@ function drawChart(yelev) {
     var ynew = (startY + endY) / 2 + xval * Math.sin(w) + yval * Math.cos(w);
     ellipsearray2.push([xnew / 1000, ynew]);
   }
+
+  // saving lower ellipse for every slave in lowerellipsearray
+  lowerellipsearray[vals] = ellipsearray2;
   // data array for the elevation
   elevarr = [];
   distarray = [];
@@ -91,6 +103,8 @@ function drawChart(yelev) {
   for (i = 0; i < 100; i++) {
     elevarr.push([distarray[i], yelev[i]]);
   }
+  // this is array which collects all the distance and elevation array for the slaves
+  distelevation[vals] = elevarr;
 
   // LOS clear/unclear
 
@@ -159,6 +173,8 @@ function drawChart(yelev) {
     [1]
   );
 
+  alljoineddata[vals] = joinedData2;
+
   var options = {
     width: 400,
     height: 200,
@@ -187,6 +203,7 @@ function drawChart(yelev) {
   );
 
   chart.draw(joinedData2, options);
+  $(`#slave${vals}Obstruction`).css("display", "block");
   // $(`#slave${vals}ReportElevation`).html($(`#slave${vals}Elevation`).html());
   yelevation = [];
   availability(vals);

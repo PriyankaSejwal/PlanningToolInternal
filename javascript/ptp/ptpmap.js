@@ -136,6 +136,9 @@ function inputMarker() {
   // disable the button for calculating the budget calculation
   $(`#latLongBtn`).prop("disabled", true);
 
+  // removing data from the obstruction list
+  $(`#obsUL`).html("");
+
   clearOverlays();
   // markersarr = [];
   latlongarr = [];
@@ -334,7 +337,6 @@ function drawPolyline() {
   document.getElementById("ptpreportbtn").style.cursor = "pointer";
 
   if (markersPositionArr.length == 2) {
-    window.alert("length 2");
     hopazimuth();
     calcFresnel();
     deviceinfo();

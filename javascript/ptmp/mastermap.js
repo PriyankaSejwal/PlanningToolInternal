@@ -41,6 +41,7 @@ function coordMasterChange() {
     if (document.querySelector(`#slave${i}Co-ordinate`).value != "") {
       polyLine[i].setMap(null);
       reportPolyline[i].setMap(null);
+      $(`#obsUL${i}`).html("");
       polyLine[i] = new google.maps.Polyline({
         map: map,
         path: [marker[0].getPosition(), marker[i].getPosition()],

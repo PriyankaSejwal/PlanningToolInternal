@@ -91,6 +91,7 @@ function createSlavesCoordinateField() {
               polyLine[i].setMap(null);
               reportmarker[i].setMap(null);
               reportPolyline[i].setMap(null);
+              $(`#obsUL${i}`).html("");
             }
             // function which will check the format dms/dd of the coordinates
             checkSlaveFormat(lat, long, i);
@@ -202,6 +203,8 @@ function createSlavesField(i) {
 
   // function called to create slave output fields
   createOutputTables(slaveInputSection, slaveSectionBody, slavecontainer, i);
+  // function to create the obstruction container
+  addObstructionTable(slaveInputSection, i);
   // function to create the elevation div
   createElevationFields(slaveInputSection, i);
   // function to create divs for the current slave in Installation Report
@@ -248,8 +251,13 @@ function createSlavesField(i) {
   // Second event listener which gets fired when antenna gain for slave changes
   $(`#slave${i}Gain`).change(function () {
     var slaveGain = parseFloat($(`#slave${i}Gain`).val());
-    if (slaveGain > 35 || slaveGain <= 0) {
-      window.alert("Gain must be greater than 0 and less than 35. ");
+    var eirp = parseFloat($(`#eirpVal`).val());
+    if (slaveGain >= eirp || slaveGain <= 0) {
+      var allspan = document.querySelectorAll(`.empty${i}`);
+      for (let k = 0; k < allspan.length; k++) {
+        allspan[k].innerHTML = "";
+      }
+      window.alert("Gain must be greater than 0 and less than EIRP. ");
     } else {
       // function which will calculate the tx power of the slave wrt the eirp
       slaveTx(i);
@@ -288,6 +296,10 @@ function createSlavesField(i) {
         availability(i);
       }
     } else {
+      var allspan = document.querySelectorAll(`.empty${i}`);
+      for (let k = 0; k < allspan.length; k++) {
+        allspan[k].innerHTML = "";
+      }
       window.alert(`Transmit Power for Slave ${i} is out of Range`);
     }
   });
@@ -329,6 +341,16 @@ function createOutputTables(
     [" Mbps", ""],
     ["%", ""],
   ];
+
+  var classArray = [
+    [`slave${i}span `, `slave${i}span `],
+    [`slave${i}span `, `empty${i} slave${i}span `],
+    [`empty${i} slave${i}span `, `empty${i} slave${i}span `],
+    [`empty${i} slave${i}span `, `empty${i} slave${i}span `],
+    [`empty${i} slave${i}span `, `empty${i} slave${i}span `],
+    [`empty${i} slave${i}span `, `slave${i}span `],
+    [`empty${i} slave${i}span `, `slave${i}span `],
+  ];
   var tableArrLength = tableArr.length;
   $("<table>", { id: `slave${i}Table`, class: "link-summary table" }).appendTo(
     $(`#tableDiv${i}`)
@@ -342,7 +364,7 @@ function createOutputTables(
       );
       $("<span>", {
         id: tableArr[k][j] + `${i}1`,
-        class: `slave${i}span`,
+        class: classArray[k][j],
       }).appendTo(
         $("<td>").appendTo($(`#slave${i}Table tr:nth-child(${k + 1})`))
       );
@@ -355,9 +377,27 @@ function createOutputTables(
   // slavecontainer.append(slaveSectionBorder);
 }
 function createElevationFields(slaveInputSection, i) {
-  $("<div>", { class: "ptmp-chart chart", id: `slave${i}Elevation` }).appendTo(
-    $("<div>", { class: "elevation-chart" }).appendTo(slaveInputSection)
-  );
+  var elevationsection = $("<div>", { class: "slave-elevation-section" });
+  var chartsection = $("<div>", {
+    class: "ptmp-chart chart",
+    id: `slave${i}Elevation`,
+  }).appendTo($("<div>", { class: "elevation-chart" }));
+
+  var obstructionsection = $("<div>", {
+    class: "editObstruction",
+    id: `slave${i}Obstruction`,
+    html: "Edit",
+  });
+
+  elevationsection.append(obstructionsection, chartsection);
+
+  slaveInputSection.append(elevationsection);
+
+  // eventlistener to the edit div
+  $(`#slave${i}Obstruction`).click(function () {
+    console.log("hello");
+    $(`#slave${i}ObsSection`).css("display", "block");
+  });
 }
 
 // function to create output fields
