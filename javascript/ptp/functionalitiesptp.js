@@ -25,6 +25,10 @@ function selectedRadioA() {
       calcTxPower();
     }
   } else {
+    empty = document.querySelectorAll(".empty");
+    for (let i = 0; i < empty.length; i++) {
+      empty[i].innerHTML = "";
+    }
     window.alert("Radios from same family required");
   }
 }
@@ -55,6 +59,10 @@ function selectedRadioB() {
       calcTxPower();
     }
   } else {
+    empty = document.querySelectorAll(".empty");
+    for (let i = 0; i < empty.length; i++) {
+      empty[i].innerHTML = "";
+    }
     window.alert("Radios from same family required");
   }
 }
@@ -67,6 +75,7 @@ for (let i = 1; i <= 2; i++) {
       (radioType1.includes("4l") && radioType2.includes("4l")) ||
       (radioType1.includes("4xl") && radioType2.includes("4xl"))
     ) {
+      $(`.radioAlert`).hide();
       var r = $(`#radio${i}`);
       var gain = $(`#antgain${i}`);
       var cableloss = $(`#cableLoss${i}`);
@@ -81,7 +90,11 @@ for (let i = 1; i <= 2; i++) {
         calcTxPower();
       }
     } else {
-      window.alert("Radios from same family required");
+      empty = document.querySelectorAll(".empty");
+      for (let i = 0; i < empty.length; i++) {
+        empty[i].innerHTML = "";
+      }
+      $(`.radioAlert`).show();
     }
   });
 }
