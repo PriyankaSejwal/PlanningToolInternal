@@ -42,6 +42,7 @@ function getdatafromobslist(i) {
 function updateElevationWithObstruction(i) {
   console.log("elevation after obstruction function");
   var data4 = getdatafromobslist(i);
+  var lowerellipse = lowerellipsearray[i];
   obstructionjoined = google.visualization.data.join(
     alljoineddata[i],
     data4,
@@ -54,7 +55,7 @@ function updateElevationWithObstruction(i) {
   for (let k = 0; k < obsindexarray[i].length; k++) {
     var obsdata = obsarray[i];
     var index = obsindexarray[i];
-    if (obsdata[k][1] > ellipsearray2[index[k]][1]) {
+    if (obsdata[k][1] > lowerellipse[index[k]][1]) {
       $(`#LOS${i}1`).html("No");
       $(`#reportSlave${i}LOS0`).html("No");
       $(`#reportSlave${i}LOS1`).html("No");

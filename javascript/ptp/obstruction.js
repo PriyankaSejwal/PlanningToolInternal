@@ -22,39 +22,50 @@ function newObstructionData() {
   li.className = "obsLi";
   var obstructionValue = document.querySelector("#obstructionDistance").value;
   var obstructionHt = document.querySelector("#obstructionMastHt").value;
-  var t = document.createTextNode(
-    obstructionValue + "      |      " + obstructionHt
-  );
-  li.appendChild(t);
-  if (obstructionValue === "") {
+  var hopdist = $(`#linkDistance`).html();
+  if (obstructionValue <= hopdist) {
+    var t = document.createTextNode(
+      obstructionValue + "      |      " + obstructionHt
+    );
+    li.appendChild(t);
+    if (obstructionValue === "") {
+    } else {
+      obsList.appendChild(li);
+    }
+    document.querySelector("#obstructionDistance").value = " ";
+    document.querySelector("#obstructionMastHt").value = " ";
+    document.querySelector("#obstructionDistance").style.background = "white";
+    document.querySelector("#obstructionMastHt").style.background = "white";
+
+    // adding a close button to the list item
+    var span = document.createElement("span");
+    var deletetxt = document.createTextNode("\u00D7");
+    span.className = "deleteObs";
+    span.appendChild(deletetxt);
+    li.appendChild(span);
+
+    // Click on the close button to hide the current list item
+    var close = document.getElementsByClassName("deleteObs");
+    for (var i = 0; i < close.length; i++) {
+      close[i].addEventListener("click", function () {
+        console.log("getting clicked not deleted");
+        var div = this.parentElement;
+        document.querySelector("#obsUL").removeChild(div);
+      });
+    }
   } else {
-    obsList.appendChild(li);
-  }
-  document.querySelector("#obstructionDistance").value = " ";
-  document.querySelector("#obstructionMastHt").value = " ";
-  document.querySelector("#obstructionDistance").style.background = "white";
-  document.querySelector("#obstructionMastHt").style.background = "white";
-
-  // adding a close button to the list item
-  var span = document.createElement("span");
-  var deletetxt = document.createTextNode("\u00D7");
-  span.className = "deleteObs";
-  span.appendChild(deletetxt);
-  li.appendChild(span);
-
-  // Click on the close button to hide the current list item
-  var close = document.getElementsByClassName("deleteObs");
-  for (var i = 0; i < close.length; i++) {
-    close[i].addEventListener("click", function () {
-      console.log("getting clicked not deleted");
-      var div = this.parentElement;
-      document.querySelector("#obsUL").removeChild(div);
-    });
+    document.querySelector("#obstructionDistance").value = " ";
+    document.querySelector("#obstructionMastHt").value = " ";
+    document.querySelector("#obstructionDistance").style.background = "white";
+    document.querySelector("#obstructionMastHt").style.background = "white";
+    window.alert(`Please enter obstruction till ${hopdist} Km.`);
   }
 }
 
+var obsArray, obsindex;
 function gettingObsDataFromUL() {
-  var obsArray = [];
+  obsArray = [];
+  obsindex = [];
   var obsData = document.getElementsByClassName("obsLi");
   Array.from(obsData).forEach(function (e) {
     var Obsdist = e.textContent.split("|")[0];
@@ -71,13 +82,8 @@ function gettingObsDataFromUL() {
       elevationArr[indexMinDiff][1]
     );
     var newObsHt = obsElevation + elevationArr[indexMinDiff][1];
-    console.log("new obs ht and obs actual height: ", newObsHt, obsElevation);
     obsArray.push([parseFloat(Obsdist), parseFloat(newObsHt)]);
-    console.log(
-      "Distance from start on the exisitng chart: ",
-      elevationArr[indexMinDiff][0]
-    );
-    console.log(obsArray);
+    obsindex.push(indexMinDiff);
   });
 
   dataObs = new google.visualization.DataTable();
@@ -101,6 +107,28 @@ function updateElevationChart() {
     [1]
   );
   console.log(obstructionJoined);
+
+  // we have obstruction in the chart so checking if obstruction is clear of the fresnel zone
+  for (let k = 0; k < obsArray.length; k++) {
+    index = obsindex[k];
+    if (obsArray[k][1] > ellipsearray2[index][1]) {
+      document.getElementById("los").innerHTML = "No";
+      document.getElementById("reportlos").innerHTML = "No";
+      document.getElementById("los").style.color = "Red";
+      ptppolyline.setOptions({ strokeColor: "Red" });
+      document.querySelector("#availabilityValue").style.display = "none";
+      document.querySelector("#msg").style.display = "table-cell";
+      document.getElementById("reportlinkAvailability").innerHTML = "No";
+      break;
+    } else {
+      document.getElementById("los").innerHTML = "Yes";
+      document.getElementById("reportlos").innerHTML = "Yes";
+      document.getElementById("los").style.color = "Green";
+      ptppolyline.setOptions({ strokeColor: "Green" });
+      document.querySelector("#availabilityValue").style.display = "table-cell";
+      document.querySelector("#msg").style.display = "none";
+    }
+  }
 
   // chart options
   var options = {
@@ -196,22 +224,43 @@ function ObsChartWithHt() {
   }
 
   //  Checking for clear Line of Sight
-  for (i = 0; i < yelevptp.length; i++) {
-    if (ellipsearray2[i][1] > yelevptp[i]) {
-      document.getElementById("los").innerHTML = "Yes";
-      document.getElementById("reportlos").innerHTML = "Yes";
-      document.getElementById("los").style.color = "Green";
-      ptppolyline.setOptions({ strokeColor: "Green" });
-      document.querySelector("#availabilityValue").style.display = "table-cell";
-      document.querySelector("#msg").style.display = "none";
-    } else {
+  // for (i = 0; i < yelevptp.length; i++) {
+  //   if (ellipsearray2[i][1] > yelevptp[i]) {
+  //     document.getElementById("los").innerHTML = "Yes";
+  //     document.getElementById("reportlos").innerHTML = "Yes";
+  //     document.getElementById("los").style.color = "Green";
+  //     ptppolyline.setOptions({ strokeColor: "Green" });
+  //     document.querySelector("#availabilityValue").style.display = "table-cell";
+  //     document.querySelector("#msg").style.display = "none";
+  //   } else {
+  //     document.getElementById("los").innerHTML = "No";
+  //     document.getElementById("reportlos").innerHTML = "No";
+  //     document.getElementById("los").style.color = "Red";
+  //     ptppolyline.setOptions({ strokeColor: "Red" });
+  //     document.querySelector("#availabilityValue").style.display = "none";
+  //     document.querySelector("#msg").style.display = "table-cell";
+  //     break;
+  //   }
+  // }
+  // we have obstruction in the chart so checking if obstruction is clear of the fresnel zone
+  for (let k = 0; k < obsArray.length; k++) {
+    index = obsindex[k];
+    if (obsArray[k][1] > ellipsearray2[index][1]) {
       document.getElementById("los").innerHTML = "No";
       document.getElementById("reportlos").innerHTML = "No";
       document.getElementById("los").style.color = "Red";
       ptppolyline.setOptions({ strokeColor: "Red" });
       document.querySelector("#availabilityValue").style.display = "none";
       document.querySelector("#msg").style.display = "table-cell";
+      document.getElementById("reportlinkAvailability").innerHTML = "No";
       break;
+    } else {
+      document.getElementById("los").innerHTML = "Yes";
+      document.getElementById("reportlos").innerHTML = "Yes";
+      document.getElementById("los").style.color = "Green";
+      ptppolyline.setOptions({ strokeColor: "Green" });
+      document.querySelector("#availabilityValue").style.display = "table-cell";
+      document.querySelector("#msg").style.display = "none";
     }
   }
   //  Calculating the Antenna Tilt / Vertical Angle and populating them in the Link Installation Report

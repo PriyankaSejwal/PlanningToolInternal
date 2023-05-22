@@ -361,9 +361,9 @@ function deviceinfo() {
       }
 
       // Fade Margin
-      fademargin =
-        parseFloat(rsl) -
-        parseFloat(refertable.rows[2].cells.item(0).innerHTML);
+      fademargin = (
+        parseFloat(rsl) - parseFloat(refertable.rows[2].cells.item(0).innerHTML)
+      ).toFixed(2);
 
       var rowlength = refertable.rows.length;
       for (let t = 1; t < rowlength; t++) {

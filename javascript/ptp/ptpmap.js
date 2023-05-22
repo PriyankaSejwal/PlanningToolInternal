@@ -13,6 +13,7 @@ var yelevptp, elevationArr;
 var ptpgeocoder;
 var ptpchart;
 var ptpjoinedData;
+var ellipsearray2;
 
 google.load("visualization", "1", { packages: ["corechart"] });
 
@@ -453,6 +454,7 @@ function elevationchartptp() {
       ptppolyline.setOptions({ strokeColor: "Red" });
       document.querySelector("#availabilityValue").style.display = "none";
       document.querySelector("#msg").style.display = "table-cell";
+      document.getElementById("reportlinkAvailability").innerHTML = "No";
       break;
     }
   }
