@@ -36,6 +36,8 @@ function plotElevation({ results }) {
 }
 
 function drawChart(yelev) {
+  // emtying the chart container if it has any data
+  $(`#slave${vals}Elevation`).html("");
   allElevation[vals].push(yelev);
   var dist = parseFloat($(`#Distance${vals}1`).html());
   var rad = parseFloat(
