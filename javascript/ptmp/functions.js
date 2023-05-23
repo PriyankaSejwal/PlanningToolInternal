@@ -13,6 +13,11 @@ var throughputArr = [[], []];
 function createSlavesCoordinateField() {
   // $("#reportButton").prop("disabled", false);
   $("#disabled-section").removeClass("disabled-class");
+  // disabling the add slave button
+  $(`#addSlaveButton`).prop("disabled", true);
+  // deactivating the report button
+  $("#reportButton").prop("disabled", true);
+
   var coordContainer = $("#slaveCoordSection");
   coordContainer.html("");
   $("#slavesInput").html("");

@@ -53,6 +53,8 @@ function resetptmp() {
     $("#slavesInput").html("");
     // deactivating the report button
     $("#reportButton").prop("disabled", true);
+    // disabling the add slave button
+    $(`#addSlaveButton`).prop("disabled", true);
 
     //   get the lost data
     // frequency table
