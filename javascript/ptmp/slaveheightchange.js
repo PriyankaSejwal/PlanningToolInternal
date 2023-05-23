@@ -74,7 +74,7 @@ function slaveHeightChangeNoObs(iter) {
   }
 
   // this is array which collects all the distance and elevation array for the slaves
-  distelevation[iter] = elevarr;
+  // distelevation[iter] = elevarr;
 
   //  Elevation data both x values and y values
   for (i = 0; i < 100; i++) {
@@ -232,6 +232,9 @@ function slaveHeightChangeAfterObs(iter) {
     var ynew = (startY + endY) / 2 + xval * Math.sin(w) + yval * Math.cos(w);
     ellipsearray2.push([xnew / 1000, ynew]);
   }
+  // saving lower ellipse for every slave in lowerellipsearray
+  // ellipse will get affected when we change the height of the slave
+  lowerellipsearray[iter] = ellipsearray2;
   // data array for the elevation
   arr = [];
   distarray = [];
