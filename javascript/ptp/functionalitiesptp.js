@@ -284,7 +284,7 @@ function calcTxPower() {
     antgain = antgain < eirp ? antgain : eirp - 1;
     $(`#antgain${i}`).val(antgain);
 
-    // Calculated tx power for A B sites
+    // Calculated tx power for A B sites based on the eirp antenna gain and cable loss
     var tx = eirp - antgain + cableloss;
 
     if (tx < 3) {

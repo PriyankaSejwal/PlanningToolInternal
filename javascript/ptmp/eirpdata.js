@@ -4,7 +4,7 @@ EIRP value based on the country and the channel frequency  */
 // Global variable
 // var eirp;
 var maxtx;
-
+var slaveMaxTxLimit = [];
 function eirpcalculate() {
   var frequency = $("#channelFreq").val();
   var selectedCountry = $("#ctryCode").val();
@@ -41,23 +41,32 @@ function eirpcalculate() {
 function masterTx() {
   var eirp = parseFloat($("#eirpVal").val());
   var antennagain = parseFloat($("#masterRadio").val().split(",")[0]);
+  // var mastertx = parseFloat($("#masterTxPower").val());
   var cableloss = 2;
-
+  // tx power basis the eirp antenna gain and cable loss
   var maxmastertxPower = eirp - antennagain + cableloss;
+  // checking whether the tx power value in the Master tx power field is less tahn maxtx or not
+  // if tx power value in fied is less than the maxtx then we keep the field value as replace with maxtx
+  // txPower = mastertx < maxmastertxPower ? mastertx : maxmastertxPower;
+  // now we will check the txpower with mx tx power allowed in the selected country
   var mastertxPower = maxmastertxPower > maxtx ? maxtx : maxmastertxPower;
 
   $("#masterTxPower").val(mastertxPower);
   slaveMaxTxLimit[0] = mastertxPower;
 }
 // function which calculates transmit power for each slave when eirp is known
-var slaveMaxTxLimit = [];
+
 function slaveTx(i) {
   var eirp = parseFloat($("#eirpVal").val());
   var antennaGain = parseFloat($(`#slave${i}Gain`).val());
   antennaGain = antennaGain < eirp ? antennaGain : eirp - 1;
   $(`#slave${i}Gain`).val(antennaGain);
   var cableloss = 2;
+  // var slavetx = parseFloat($(`#slave${i}Tx`).val());
   var slavemaxTxPower = eirp - antennaGain + cableloss;
+  // checking if slave tx value is smaller than the one calculated usig eirp
+  // txPower = slavetx < slavemaxTxPower ? slavetx : slavemaxTxPower;
+  // comparing slavetx with maxtx allowed in country
   var slavetxpower = slavemaxTxPower > maxtx ? maxtx : slavemaxTxPower;
   $(`#slave${i}Tx`).val(slavetxpower);
   slaveMaxTxLimit[i] = slavetxpower;

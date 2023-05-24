@@ -305,6 +305,8 @@ function createSlavesField(i) {
       for (let k = 0; k < allspan.length; k++) {
         allspan[k].innerHTML = "";
       }
+      $(`#slave${i}Tx`).val("");
+      $(`#slave${i}Tx`).focus();
       window.alert(`Transmit Power for Slave ${i} is out of Range`);
     }
   });

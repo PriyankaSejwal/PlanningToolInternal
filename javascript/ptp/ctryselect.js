@@ -28,7 +28,7 @@ function ptpctryChange() {
 
   // IF CTRY IS NO COUNTRY
   if (cCode == "nd") {
-    map.setZoom(5);
+    ptpmap.setZoom(5);
     $("#eirplevel").hide();
   } else {
     $("#eirplevel").show();
@@ -201,6 +201,7 @@ function ptpfrequencydata() {
 function createFreq(optarr, size) {
   var cf = document.getElementById("ptpchannelFrequency");
   // cf.value = optarr[0];
+  cf.innerHTML = "";
   var array = [];
   for (i = 0; i < optarr.length; i += 2) {
     for (j = optarr[i]; j <= optarr[i + 1]; j += size) {

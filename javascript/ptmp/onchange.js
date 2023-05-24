@@ -158,6 +158,8 @@ function masterTxChange() {
     }
   } else {
     window.alert("Master Transmit power out of range");
+    $(`#masterTxPower`).val("");
+    $(`#masterTxPower`).focus();
   }
 }
 
