@@ -5,6 +5,7 @@ body {
   font-family: "Poppins", sans-serif;
   color: #350964;
   height: 100%;
+  max-width: 1500px;
   /* overflow: hidden; */
 }
 .container-fluid {

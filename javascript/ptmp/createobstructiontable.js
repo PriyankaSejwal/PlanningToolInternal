@@ -26,7 +26,7 @@ function addObstructionTable(slaveInputSection, i) {
   );
 
   //   creating three input fields in for loop whihc will be kep in div with class row.
-  var obsarray = ["Distance(in Km)", "Obstruction Height(in m)", ""];
+  var obsarray = ["Distance(Km)", "Obstruction(m)", ""];
   var obsid = ["obsDist", "obsHeight", "addobs"];
   var obstype = ["text", "text", "button"];
   var text = ["", "", "Add"];

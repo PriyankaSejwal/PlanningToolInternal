@@ -295,6 +295,7 @@ function calcTxPower() {
 
       tx = tx > maxtx ? maxtx : tx;
       $(`#transmitPower${i}`).val(tx);
+      $(`#transmitPower${i}`).prop("max", tx);
     }
     deviceinfo();
   }

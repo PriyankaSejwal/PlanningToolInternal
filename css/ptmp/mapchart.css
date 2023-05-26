@@ -38,3 +38,21 @@
     height: 400px;
   }
 }
+
+@media screen and (max-width: 1200px) {
+  .ptmp-chart {
+    width: 410px;
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .ptmp-chart {
+    width: 375px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .ptmp-chart {
+    width: 400px;
+  }
+}

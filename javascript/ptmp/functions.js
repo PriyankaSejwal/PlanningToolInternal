@@ -385,18 +385,21 @@ function createOutputTables(
 }
 function createElevationFields(slaveInputSection, i) {
   var elevationsection = $("<div>", { class: "slave-elevation-section" });
+  var rowelevationsection = $("<div>", { class: "row me-0" });
+
+  rowelevationsection.appendTo(elevationsection);
   var chartsection = $("<div>", {
-    class: "ptmp-chart chart",
+    class: "ptmp-chart chart col-10 sidebar-padding",
     id: `slave${i}Elevation`,
   }).appendTo($("<div>", { class: "elevation-chart" }));
 
   var obstructionsection = $("<div>", {
-    class: "editObstruction",
+    class: "editObstruction col-1 sidebar-padding",
     id: `slave${i}Obstruction`,
     html: "Edit",
   });
 
-  elevationsection.append(obstructionsection, chartsection);
+  rowelevationsection.append(chartsection, obstructionsection);
 
   slaveInputSection.append(elevationsection);
 

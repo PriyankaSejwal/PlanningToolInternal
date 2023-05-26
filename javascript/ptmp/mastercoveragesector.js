@@ -35,6 +35,7 @@ function findMarker(latlong, heading, distance) {
 function drawSector() {
   // function called to find left and right lat long for Sector around /master
   var masterCoord = $(`#masterDDCoord`).val();
+  setSectorBounds();
   var leftSectorPt = findMarker(masterCoord, sectorBound[0], 5000);
   var centerPt = findMarker(masterCoord, sectorBound[1], 5000);
   var rightSectorPt = findMarker(masterCoord, sectorBound[2], 5000);

@@ -142,7 +142,8 @@
 }
 
 /* Elevation Chart */
-.elevation-chart {
+.elevation-chart,
+.ptmp-chart {
   border-radius: 4px;
   text-align: center;
   background-color: #fff;

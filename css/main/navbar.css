@@ -9,6 +9,7 @@ body {
   background: transparent;
   color: #545454;
   font-family: "Poppins", sans-serif;
+  max-width: 1500px;
 }
 
 /* Loader CSS */
@@ -41,7 +42,8 @@ body {
   width: 100%;
   padding: 0px;
   height: 110px;
-  box-shadow: rgb(0 0 0 /20%) 0 2px 4px;
+  /* box-shadow: rgb(0 0 0 /20%) 0 2px 4px; */
+  max-width: 1500px;
 }
 .top-head {
   width: 100%;
@@ -58,6 +60,9 @@ a,
 a:hover {
   text-decoration: none;
   outline: none;
+}
+a:hover {
+  color: #fff;
 }
 a,
 button {
@@ -131,6 +136,7 @@ button {
 .bottom-head {
   width: 100%;
   background-color: #fff !important;
+  box-shadow: rgb(0 0 0 /20%) 0 2px 4px;
 }
 
 .bottomheadflex {
