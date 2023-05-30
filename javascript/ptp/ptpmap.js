@@ -5,6 +5,7 @@ var ptpmarker;
 var ptpmarkersarr = [];
 var reportMarkerArr = [];
 var ptppolyline = null;
+var reportpolyline = null;
 var latlongarr = [];
 var ptpbounds;
 var ptpreportbounds;
@@ -69,31 +70,9 @@ function addMarker(latLng) {
 
 function reportMarker() {
   document.querySelector(".ptppopup").style.display = "block";
-  polyarr = [];
-
-  ptpreportbounds = new google.maps.LatLngBounds();
-  ptpmarkersarr.forEach(function (e) {
-    pos = e.getPosition();
-    polyarr.push(pos);
-    ptpmarker = new google.maps.Marker({
-      map: ptpreportmap,
-      position: new google.maps.LatLng(pos.lat(), pos.lng()),
-    });
-    ptpreportbounds.extend(ptpmarker.getPosition());
-  });
   ptpreportmap.fitBounds(ptpreportbounds);
+  // populating the inner html of elevation chart to the report elevation chart
 
-  // adding polyline to the Map
-  var reportpolyline = new google.maps.Polyline({
-    map: ptpreportmap,
-    path: polyarr,
-    strokeOpacity: 0.4,
-  });
-
-  // function for screenshot called
-  // takeshot();
-  // document.querySelector("#reportmap").innerHTML =
-  //   document.querySelector("#map3d").innerHTML;
   document.querySelector("#report_elevation_profile").innerHTML =
     document.querySelector("#ptpchart").innerHTML;
 
@@ -154,7 +133,9 @@ function inputMarker() {
         latlongarr.push(e.value.split(","));
       });
       ptpbounds = new google.maps.LatLngBounds();
+      ptpreportbounds = new google.maps.LatLngBounds();
       for (i = 0; i < latlongarr.length; i++) {
+        // Marker in the main map
         ptpmarker = new google.maps.Marker({
           map: ptpmap,
           position: new google.maps.LatLng(latlongarr[i][0], latlongarr[i][1]),
@@ -162,20 +143,19 @@ function inputMarker() {
         });
         ptpmap.setZoom(12);
         ptpbounds.extend(ptpmarker.getPosition());
+        // Marker in the report map
+        ptpreportmarker = new google.maps.Marker({
+          map: ptpreportmap,
+          position: new google.maps.LatLng(latlongarr[i][0], latlongarr[i][1]),
+        });
+        ptpreportmap.setZoom(12);
+        ptpreportbounds.extend(ptpreportmarker.getPosition());
+        // updating the arrays for map and report map
         ptpmarkersarr.push(ptpmarker);
         reportMarkerArr.push(ptpmarker);
-        // Reading the values of lat long to feed to the validate function
-        // var inputlatA = parseFloat(site1.split(",")[0]);
-        // var inputlongA = parseFloat(site1.split(",")[1]);
-        // var inputlatB = parseFloat(siteb.split(",")[0]);
-        // var inputlongB = parseFloat(siteb.split(",")[1]);
-
-        // validateAdd(inputlatA, inputlongA, inputlatB, inputlongB);
-        // drawPolyline();
         // add listener to redraw the polyline when markers position change
         ptpmarker.addListener("dragend", function () {
           addAddress();
-          // drawPolyline();
         });
       }
       ptpmap.fitBounds(ptpbounds);
@@ -189,9 +169,11 @@ function clearOverlays() {
   for (var i = 0; i < ptpmarkersarr.length; i++) {
     if (ptpmarkersarr[i] != undefined) {
       ptpmarkersarr[i].setMap(null);
+      reportMarkerArr[i].setMap(null);
     }
   }
   ptpmarkersarr.length = 0;
+  reportMarkerArr.length = 0;
 }
 
 function addAddress() {
@@ -326,11 +308,18 @@ function drawPolyline() {
   // checking if polyline is not null
   if (ptppolyline != null) {
     ptppolyline.setMap(null);
+    reportpolyline.setMap(null);
   }
 
   // adding polyline to the Map
   ptppolyline = new google.maps.Polyline({
     map: ptpmap,
+    path: markersPositionArr,
+    strokeOpacity: 0.8,
+  });
+  // adding polyline to the report Map
+  reportpolyline = new google.maps.Polyline({
+    map: ptpreportmap,
     path: markersPositionArr,
     strokeOpacity: 0.8,
   });
@@ -445,6 +434,7 @@ function elevationchartptp() {
       document.getElementById("reportlos").innerHTML = "Yes";
       document.getElementById("los").style.color = "Green";
       ptppolyline.setOptions({ strokeColor: "Green" });
+      reportpolyline.setOptions({ strokeColor: "Green" });
       document.querySelector("#availabilityValue").style.display = "table-cell";
       document.querySelector("#msg").style.display = "none";
     } else {
@@ -452,6 +442,7 @@ function elevationchartptp() {
       document.getElementById("reportlos").innerHTML = "No";
       document.getElementById("los").style.color = "Red";
       ptppolyline.setOptions({ strokeColor: "Red" });
+      reportpolyline.setOptions({ strokeColor: "Red" });
       document.querySelector("#availabilityValue").style.display = "none";
       document.querySelector("#msg").style.display = "table-cell";
       document.getElementById("reportlinkAvailability").innerHTML = "No";
