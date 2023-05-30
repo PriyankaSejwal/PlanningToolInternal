@@ -12,30 +12,34 @@ for (let i = 1; i <= 2; i++) {
 function dmsddCheck(i) {
   coord = $(`#searchtower${i}`).val();
   if (coord != "") {
-    var lat = coord.split(",")[0];
-    var long = coord.split(",")[1];
-    // Regular expression to match DMS format (e.g. 40°26'46.302"N)
-    const dmsPattern =
-      /^\s?-?\d{1,3}[°]\d{1,2}[']\d{1,2}(\.\d+)?["][NSWE]\s?$/i;
+    if (coord.includes(",")) {
+      var lat = coord.split(",")[0];
+      var long = coord.split(",")[1];
+      if (long != " ") {
+        // Regular expression to match DMS format (e.g. 40°26'46.302"N)
+        const dmsPattern =
+          /^\s?-?\d{1,3}[°]\d{1,2}[']\d{1,2}(\.\d+)?["][NSWE]\s?$/i;
 
-    // Regular expression to match DD format (e.g. 40.446195, -79.948862)
-    const ddPattern = /^\s?-?\d+(\.\d+)?°?\s?$/;
-    if (dmsPattern.test(lat) && dmsPattern.test(long)) {
-      var splitlat = lat.split(/[^\d\w\.\-\ ]+/);
-      var ddlat = dmsToDD(splitlat);
-      var splitlong = long.split(/[^\d\w\.\-\ ]+/);
-      var ddlong = dmsToDD(splitlong);
-      $(`#decimal${i}`).val(ddlat + ", " + ddlong);
-      // function to check the lat long bouds of the coutnry
-      validatecoord(ddlat, ddlong, i);
-    } else if (ddPattern.test(lat) && ddPattern.test(long)) {
-      var ddlat = parseFloat(lat);
-      var ddlong = parseFloat(long);
-      $(`#decimal${i}`).val(ddlat + ", " + ddlong);
-      // function calling which will check whether the lat long is in the bounding range of the country selected
-      validatecoord(ddlat, ddlong, i);
-    } else {
-      window.alert("Invalid coordinate format");
+        // Regular expression to match DD format (e.g. 40.446195, -79.948862)
+        const ddPattern = /^\s?-?\d+(\.\d+)?°?\s?$/;
+        if (dmsPattern.test(lat) && dmsPattern.test(long)) {
+          var splitlat = lat.split(/[^\d\w\.\-\ ]+/);
+          var ddlat = dmsToDD(splitlat);
+          var splitlong = long.split(/[^\d\w\.\-\ ]+/);
+          var ddlong = dmsToDD(splitlong);
+          $(`#decimal${i}`).val(ddlat + ", " + ddlong);
+          // function to check the lat long bouds of the coutnry
+          validatecoord(ddlat, ddlong, i);
+        } else if (ddPattern.test(lat) && ddPattern.test(long)) {
+          var ddlat = parseFloat(lat);
+          var ddlong = parseFloat(long);
+          $(`#decimal${i}`).val(ddlat + ", " + ddlong);
+          // function calling which will check whether the lat long is in the bounding range of the country selected
+          validatecoord(ddlat, ddlong, i);
+        }
+      } else {
+        window.alert("Invalid coordinate format");
+      }
     }
   }
 }
