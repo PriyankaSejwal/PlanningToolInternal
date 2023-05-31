@@ -181,10 +181,10 @@ function creatingReportDiv(i) {
       $("<th>", { html: "" }).appendTo(
         $("<tr>").appendTo(`#slave${i}StatsTable`)
       );
-      $("<th>", { html: "Up Link" }).appendTo(
+      $("<th>", { html: "Master" }).appendTo(
         `#slave${i}StatsTable tr:nth-child(${k})`
       );
-      $("<th>", { html: "Down Link" }).appendTo(
+      $("<th>", { html: `Slave ${i}` }).appendTo(
         `#slave${i}StatsTable tr:nth-child(${k})`
       );
     } else {
