@@ -273,19 +273,19 @@ function ObsChartWithHt() {
   // data 1 for the elevation
   var data = new google.visualization.DataTable();
   data.addColumn("number", "distance");
-  data.addColumn("number", "line of sight");
+  data.addColumn("number", "elevation");
   data.addRows(arr);
 
   // data 2 for half of the ellipse
   var data2 = new google.visualization.DataTable();
   data2.addColumn("number", "distance");
-  data2.addColumn("number", "elevation");
+  data2.addColumn("number", "fresnel zone");
   data2.addRows(ellipsearray);
 
   // data 3 for other half of the ellipse
   var data3 = new google.visualization.DataTable();
   data3.addColumn("number", "distance");
-  data3.addColumn("number", "elevation");
+  data3.addColumn("number", "fresnel zone");
   data3.addRows(ellipsearray2);
 
   // joined data for elevation and first half of ellipse
