@@ -52,6 +52,7 @@ body {
   bottom: 22px;
   margin-bottom: -22px;
   color: #54585a;
+  opacity: 0.4;
 }
 .align-center {
   text-align: center;
@@ -263,6 +264,7 @@ input {
 .units {
   color: #54585a;
   font-size: 10px; /* padding-left: 45px; */
+  /* opacity: 0.4; */
 }
 .masterTableDiv {
   width: 95%;

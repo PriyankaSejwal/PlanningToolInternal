@@ -69,6 +69,10 @@ input:hover {
   background-color: #e7f2f7;
   color: #54585a;
 }
+input[type="number"]::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+}
 /* the button calculate which is disbaled till lat long entered for both sides */
 .validate-section {
   text-align: center !important;
@@ -135,6 +139,7 @@ strong {
   bottom: 22px;
   margin-bottom: -22px; /* to avoid extra space taken up by div for this element */
   color: #54585a;
+  opacity: 0.4;
 }
 /* styling for the section containing the link summary */
 .ptp-sidebar-section-header {

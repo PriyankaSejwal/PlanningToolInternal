@@ -133,7 +133,7 @@ function createSlavesField(i) {
   var slavedivIn = $("<div>", { class: "row" }).appendTo(slaveSectionBody);
   inputArray = ["Radio", "Gain", "Tx Power", "Height"];
   var nameArray = ["Radio", "Gain", "Tx", "Height"];
-  var unitArray = ["", "dB", "dBm", "m"];
+  var unitArray = ["", "dBi", "dBm", "m"];
   for (let j = 0; j < inputArray.length; j++) {
     // creating a div with class item
     var slaveitem1 = $("<div>", { class: "col-3 sidebar-padding" }).appendTo(
