@@ -407,12 +407,12 @@ function deviceinfo() {
       // Link Rate
       $(`#linkRate${i}`).html(linkrate);
       // Throughput
-      $(`#throughput${i}`).html(throughput);
-      $(`#reportthroughput${i}`).html(throughput);
+      $(`#throughput${i}`).html(throughput / 2);
+      $(`#reportthroughput${i}`).html(throughput / 2);
 
       if (radioName.includes("CPE") && throughput > 300) {
-        $(`#throughput${i}`).html(throughput);
-        $(`#reportthroughput${i}`).html(300);
+        $(`#throughput${i}`).html(300 / 2);
+        $(`#reportthroughput${i}`).html(300 / 2);
       }
     }
     availability();

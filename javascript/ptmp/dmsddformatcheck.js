@@ -1,7 +1,11 @@
 // this javascript file contains functions whihc will help us check and validate the format of the lat long
 function checkSlaveFormat(lat, long, i) {
   // Regular expression to match DMS format (e.g. 40°26'46.302"N)
-  const dmsPattern = /^\s?-?\d{1,3}[°]\d{1,2}[']\d{1,2}(\.\d+)?["][NSWE]\s?$/i;
+  // const dmsPattern = /^\s?-?\d{1,3}[°]\d{1,2}[']\d{1,2}(\.\d+)?["][NSWE]\s?$/i;
+
+  // dms pattern which assumes that there can or cannot be one or many space after the dms symbols \s*?
+  const dmsPattern =
+    /^\s?-?\d{1,3}[°]\s*?\d{1,2}[']\s*?\d{1,2}(\.\d+)?["]\s*?[NSWE]\s?$/i;
 
   // Regular expression to match DD format (e.g. 40.446195, -79.948862)
   const ddPattern = /^\s?-?\d+(\.\d+)?°?\s?$/;
@@ -29,7 +33,11 @@ function checkSlaveFormat(lat, long, i) {
 // check Master format
 function checkMasterFormat(lat, long) {
   // Regular expression to match DMS format (e.g. 40°26'46.302"N)
-  const dmsPattern = /^\s?-?\d{1,3}[°]\d{1,2}[']\d{1,2}(\.\d+)?["][NSWE]\s?$/i;
+  // const dmsPattern = /^\s?-?\d{1,3}[°]\d{1,2}[']\d{1,2}(\.\d+)?["][NSWE]\s?$/i;
+
+  // dms pattern which assumes that there can or cannot be one or many space after the dms symbols \s*?
+  const dmsPattern =
+    /^\s?-?\d{1,3}[°]\s*?\d{1,2}[']\s*?\d{1,2}(\.\d+)?["]\s*?[NSWE]\s?$/i;
 
   // Regular expression to match DD format (e.g. 40.446195, -79.948862)
   const ddPattern = /^\s?-?\d+(\.\d+)?°?\s?$/;
@@ -40,7 +48,7 @@ function checkMasterFormat(lat, long) {
     var splitlong = long.split(/[^\d\w\.\-\ ]+/);
     var ddlong = dmsToDD(splitlong);
     // entering the decimal value in the Master field for decimal format coordinate
-    $("#matserDDCoord").val(`${ddlat}, ${ddlong}`);
+    $("#masterDDCoord").val(`${ddlat}, ${ddlong}`);
     // function which confirms whether lat lng of Master belongs to the selected country
     checkMasterBounds(ddlat, ddlong);
   } else if (ddPattern.test(lat) && ddPattern.test(long)) {

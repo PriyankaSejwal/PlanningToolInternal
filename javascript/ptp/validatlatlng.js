@@ -17,8 +17,12 @@ function dmsddCheck(i) {
       var long = coord.split(",")[1];
       if (long != " ") {
         // Regular expression to match DMS format (e.g. 40°26'46.302"N)
+        // const dmsPattern =
+        //   /^\s?-?\d{1,3}[°]\d{1,2}[']\d{1,2}(\.\d+)?["][NSWE]\s?$/i;
+
+        // dms pattern which assumes that there can or cannot be one or many space after the dms symbols \s*?
         const dmsPattern =
-          /^\s?-?\d{1,3}[°]\d{1,2}[']\d{1,2}(\.\d+)?["][NSWE]\s?$/i;
+          /^\s?-?\d{1,3}[°]\s*?\d{1,2}[']\s*?\d{1,2}(\.\d+)?["]\s*?[NSWE]\s?$/i;
 
         // Regular expression to match DD format (e.g. 40.446195, -79.948862)
         const ddPattern = /^\s?-?\d+(\.\d+)?°?\s?$/;

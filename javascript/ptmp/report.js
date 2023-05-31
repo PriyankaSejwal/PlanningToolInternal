@@ -92,7 +92,7 @@ function creatingReportDiv(i) {
     "Cable Loss",
     "Height",
   ];
-  var unitArray = ["", "", " dB", " dBm", " dBm", " m"];
+  var unitArray = ["", "", " dBi", " dBm", " dB", " m"];
   for (let k = 1; k <= summaryArray.length; k++) {
     $("<tr>").appendTo(`#slave${i}SummaryTable`);
     $("<th>", { html: labelArray[k - 1] }).appendTo(
