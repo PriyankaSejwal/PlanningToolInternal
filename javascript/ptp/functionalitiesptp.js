@@ -310,7 +310,7 @@ for (let i = 1; i <= 2; i++) {
     .querySelector(`#transmitPower${i}`)
     .addEventListener("change", function () {
       var txpower = this.value;
-      if (txpower < 3 || txpower > 27) {
+      if (txpower < 3 || txpower > maxTxArray[i]) {
         document.querySelector(`.tx${i}Alert2`).style.display = "block";
         empty = document.querySelectorAll(".empty");
         for (let j = 0; j < empty.length; j++) {
