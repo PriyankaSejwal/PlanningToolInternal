@@ -168,8 +168,8 @@ function createSlavesField(i) {
           ion4l3: "25",
           ion4l3_CPE: "25",
           ion4l4: "27",
-          ion4le: "0",
-          ion4le_CPE: "0",
+          ion4le: "",
+          ion4le_CPE: "",
         };
         for (let [key, val] of Object.entries(radioList)) {
           var radioOption = document.createElement("option");
@@ -237,6 +237,11 @@ function createSlavesField(i) {
       var radioType = selection.html();
       if (radioType.includes("le")) {
         $(`#slave${i}Gain`).prop("disabled", false);
+        // emptying the entire calculation table
+        var allspan = document.querySelectorAll(`.empty${i}`);
+        for (let k = 0; k < allspan.length; k++) {
+          allspan[k].innerHTML = "";
+        }
         $(`#slave${i}Gain`).focus();
       } else {
         $(`#slave${i}Gain`).prop("disabled", true);
@@ -262,6 +267,7 @@ function createSlavesField(i) {
       for (let k = 0; k < allspan.length; k++) {
         allspan[k].innerHTML = "";
       }
+      $(`#slave${i}Gain`).focus();
       window.alert("Gain must be greater than 0 and less than EIRP. ");
     } else {
       // function which will calculate the tx power of the slave wrt the eirp

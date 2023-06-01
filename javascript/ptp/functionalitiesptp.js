@@ -1,71 +1,71 @@
 // Function to display the antenna gain column when ion4le is selected as the radio
 //  gets called when radio is changed
-function selectedRadioA() {
-  // checking whether both the radios belong to the same family either UBAx or UB22
-  var radioType1 = $("#radio1 option:selected").html();
-  var radioType2 = $("#radio2 option:selected").html();
-  if (
-    (radioType1.includes("4l") && radioType2.includes("4l")) ||
-    (radioType1.includes("4xl") && radioType2.includes("4xl"))
-  ) {
-    var r1 = document.querySelector("#radio1");
-    var gain1 = document.querySelector("#antgain1");
-    var loss1 = document.getElementById("cableLoss1");
-    document.getElementById("antgain1").value = r1.value;
-    var radioA = r1.options[r1.selectedIndex];
-    var option_group = radioA.parentNode;
-    var gain1alert = document.querySelector(".gain1Alert");
-    var empty = document.querySelectorAll(".empty");
-    console.log(radioA.innerHTML);
-    // When external antenna selected then removing and adding certain functionalities.
-    if (option_group.label == "External Antenna") {
-      extRadio(gain1, loss1, gain1alert, empty);
-    } else {
-      otherRadio(gain1, loss1, gain1alert);
-      calcTxPower();
-    }
-  } else {
-    empty = document.querySelectorAll(".empty");
-    for (let i = 0; i < empty.length; i++) {
-      empty[i].innerHTML = "";
-    }
-    window.alert("Radios from same family required");
-  }
-}
+// function selectedRadioA() {
+//   // checking whether both the radios belong to the same family either UBAx or UB22
+//   var radioType1 = $("#radio1 option:selected").html();
+//   var radioType2 = $("#radio2 option:selected").html();
+//   if (
+//     (radioType1.includes("4l") && radioType2.includes("4l")) ||
+//     (radioType1.includes("4xl") && radioType2.includes("4xl"))
+//   ) {
+//     var r1 = document.querySelector("#radio1");
+//     var gain1 = document.querySelector("#antgain1");
+//     var loss1 = document.getElementById("cableLoss1");
+//     document.getElementById("antgain1").value = r1.value;
+//     var radioA = r1.options[r1.selectedIndex];
+//     var option_group = radioA.parentNode;
+//     var gain1alert = document.querySelector(".gain1Alert");
+//     var empty = document.querySelectorAll(".empty");
+//     console.log(radioA.innerHTML);
+//     // When external antenna selected then removing and adding certain functionalities.
+//     if (option_group.label == "External Antenna") {
+//       extRadio(gain1, loss1, gain1alert, empty);
+//     } else {
+//       otherRadio(gain1, loss1, gain1alert);
+//       calcTxPower();
+//     }
+//   } else {
+//     empty = document.querySelectorAll(".empty");
+//     for (let i = 0; i < empty.length; i++) {
+//       empty[i].innerHTML = "";
+//     }
+//     window.alert("Radios from same family required");
+//   }
+// }
 
-// Function to display the antenna gain column when ion4le is selected as the radio
-//  gets called when radio is changed
-function selectedRadioB() {
-  var radioType1 = $("#radio1 option:selected").html();
-  var radioType2 = $("#radio2 option:selected").html();
-  if (
-    (radioType1.includes("4l") && radioType2.includes("4l")) ||
-    (radioType1.includes("4xl") && radioType2.includes("4xl"))
-  ) {
-    var r2 = document.getElementById("radio2");
-    var gain2 = document.getElementById("antgain2");
-    var loss2 = document.getElementById("cableLoss2");
-    document.getElementById("antgain2").value = r2.value;
-    var radioB = r2.options[r2.selectedIndex];
-    var option_group = radioB.parentNode;
-    console.log(option_group.label);
-    var gain2alert = document.querySelector(".gain2Alert");
-    var empty = document.querySelectorAll(".empty");
-    // When ext antenna selected adding certain functionalities.
-    if (option_group.label == "External Antenna") {
-      extRadio(gain2, loss2, gain2alert, empty);
-    } else {
-      otherRadio(gain2, loss2, gain2alert);
-      calcTxPower();
-    }
-  } else {
-    empty = document.querySelectorAll(".empty");
-    for (let i = 0; i < empty.length; i++) {
-      empty[i].innerHTML = "";
-    }
-    window.alert("Radios from same family required");
-  }
-}
+// // Function to display the antenna gain column when ion4le is selected as the radio
+// //  gets called when radio is changed
+// function selectedRadioB() {
+//   var radioType1 = $("#radio1 option:selected").html();
+//   var radioType2 = $("#radio2 option:selected").html();
+//   if (
+//     (radioType1.includes("4l") && radioType2.includes("4l")) ||
+//     (radioType1.includes("4xl") && radioType2.includes("4xl"))
+//   ) {
+//     var r2 = document.getElementById("radio2");
+//     var gain2 = document.getElementById("antgain2");
+//     var loss2 = document.getElementById("cableLoss2");
+//     document.getElementById("antgain2").value = r2.value;
+//     var radioB = r2.options[r2.selectedIndex];
+//     var option_group = radioB.parentNode;
+//     console.log(option_group.label);
+//     var gain2alert = document.querySelector(".gain2Alert");
+//     var empty = document.querySelectorAll(".empty");
+//     // When ext antenna selected adding certain functionalities.
+//     if (option_group.label == "External Antenna") {
+//       extRadio(gain2, loss2, gain2alert, empty);
+//     } else {
+//       otherRadio(gain2, loss2, gain2alert);
+//       calcTxPower();
+//     }
+//   } else {
+//     empty = document.querySelectorAll(".empty");
+//     for (let i = 0; i < empty.length; i++) {
+//       empty[i].innerHTML = "";
+//     }
+//     window.alert("Radios from same family required");
+//   }
+// }
 
 for (let i = 1; i <= 2; i++) {
   $(`#radio${i}`).change(function () {
@@ -310,11 +310,30 @@ for (let i = 1; i <= 2; i++) {
       var txpower = this.value;
       if (txpower < 3 || txpower > 27) {
         document.querySelector(`.tx${i}Alert2`).style.display = "block";
+        empty = document.querySelectorAll(".empty");
+        for (let j = 0; j < empty.length; j++) {
+          empty[j].innerHTML = "";
+        }
       } else {
         document.querySelector(`.tx${i}Alert2`).style.display = "none";
         deviceinfo();
       }
     });
+  // event listener for cable loss change to check whether the entered value lies in the range of cable loss or not
+  $(`#cableLoss${i}`).change(function () {
+    var loss = Number($(`#cableLoss${i}`).val());
+    if (loss < 0 || loss > 6) {
+      $(`.cable${i}Alert`).show();
+      // removing the calculations from the link summary table
+      empty = document.querySelectorAll(".empty");
+      for (let j = 0; j < empty.length; j++) {
+        empty[j].innerHTML = "";
+      }
+    } else {
+      $(`.cable${i}Alert`).hide();
+      calcTxPower();
+    }
+  });
 }
 
 // New deviceinfo function
