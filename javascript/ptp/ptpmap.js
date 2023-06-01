@@ -36,7 +36,9 @@ function ptpMap() {
     if (ptpmarkersarr.length < 2) {
       addMarker(e.latLng);
     }
-    addAddress();
+    if (ptpmarkersarr.length == 2) {
+      addAddress();
+    }
   });
 
   // Create an ElevationService.
@@ -63,16 +65,35 @@ function addMarker(latLng) {
   });
   //extend the bounds to include each marker's position
   ptpmarkersarr.push(ptpmarker);
-  reportMarkerArr.push(ptpmarker);
+  // reportMarkerArr.push(ptpmarker);
 }
 
 // Adding Markers to the report map
 
 function reportMarker() {
   document.querySelector(".ptppopup").style.display = "block";
+  // bounds
+  ptpreportbounds = new google.maps.LatLngBounds();
+  for (let j = 0; j <= 1; j++) {
+    if (reportMarkerArr[j] != undefined) {
+      reportMarkerArr[j].setMap(null);
+    }
+  }
+  reportMarkerArr.length = 0;
+  for (let j = 0; j < ptpmarkersarr.length; j++) {
+    // Marker in the report map
+    ptpreportmarker = new google.maps.Marker({
+      map: ptpreportmap,
+      position: ptpmarkersarr[j].getPosition(),
+    });
+    // extend the bounds to include the marker's position
+    reportMarkerArr.push(ptpreportmarker);
+    ptpreportbounds.extend(ptpreportmarker.getPosition());
+  }
+  ptpreportmap.setZoom(12);
   ptpreportmap.fitBounds(ptpreportbounds);
-  // populating the inner html of elevation chart to the report elevation chart
 
+  // populating the inner html of elevation chart to the report elevation chart
   document.querySelector("#report_elevation_profile").innerHTML =
     document.querySelector("#ptpchart").innerHTML;
 
@@ -133,7 +154,7 @@ function inputMarker() {
         latlongarr.push(e.value.split(","));
       });
       ptpbounds = new google.maps.LatLngBounds();
-      ptpreportbounds = new google.maps.LatLngBounds();
+      // ptpreportbounds = new google.maps.LatLngBounds();
       for (i = 0; i < latlongarr.length; i++) {
         // Marker in the main map
         ptpmarker = new google.maps.Marker({
@@ -143,16 +164,8 @@ function inputMarker() {
         });
         ptpmap.setZoom(12);
         ptpbounds.extend(ptpmarker.getPosition());
-        // Marker in the report map
-        ptpreportmarker = new google.maps.Marker({
-          map: ptpreportmap,
-          position: new google.maps.LatLng(latlongarr[i][0], latlongarr[i][1]),
-        });
-        ptpreportmap.setZoom(12);
-        ptpreportbounds.extend(ptpreportmarker.getPosition());
         // updating the arrays for map and report map
         ptpmarkersarr.push(ptpmarker);
-        reportMarkerArr.push(ptpmarker);
         // add listener to redraw the polyline when markers position change
         ptpmarker.addListener("dragend", function () {
           addAddress();
