@@ -45,7 +45,6 @@ input:hover {
 /* select option styling*/
 /* sideBarbody 2 for the main ptmp page where we select the number of slaves bandwidth frequency */
 .sidebarBody2 select {
-  appearance: none;
   outline: none;
   font-family: "Poppins", sans-serif;
   width: 100%;
@@ -57,10 +56,6 @@ input:hover {
   border: 1px solid #d6d6d6;
   border-radius: 4px;
   height: 28px;
-  background-image: url(/images/angle-down-solid.svg);
-  background-repeat: no-repeat;
-  background-position: calc(100% - 4px) 50%;
-  background-size: 15px 15px;
   color: #54585a !important;
   letter-spacing: 0.05em;
   background-color: #fff;
