@@ -272,6 +272,7 @@ function calcFresnel() {
 // }
 
 // function to calculate the max transmit power based on eirp and antenna gain
+var maxTxArray = [];
 function calcTxPower() {
   var eirp = parseInt($("#ptpeirpMax").val());
   for (let i = 1; i <= 2; i++) {
@@ -296,6 +297,7 @@ function calcTxPower() {
       tx = tx > maxtx ? maxtx : tx;
       $(`#transmitPower${i}`).val(tx);
       $(`#transmitPower${i}`).prop("max", tx);
+      maxTxArray[i] = tx;
     }
     deviceinfo();
   }
