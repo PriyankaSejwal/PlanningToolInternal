@@ -37,6 +37,7 @@ function ptpMap() {
       addMarker(e.latLng);
     }
     if (ptpmarkersarr.length == 2) {
+      addMarkerToReport();
       addAddress();
     }
   });
@@ -60,6 +61,7 @@ function addMarker(latLng) {
   });
   // add listener to redraw the polyline when markers position change
   ptpmarker.addListener("dragend", function () {
+    addMarkerToReport();
     addAddress();
     // drawPolyline();
   });
@@ -69,9 +71,7 @@ function addMarker(latLng) {
 }
 
 // Adding Markers to the report map
-
-function reportMarker() {
-  document.querySelector(".ptppopup").style.display = "block";
+function addMarkerToReport() {
   // bounds
   ptpreportbounds = new google.maps.LatLngBounds();
   for (let j = 0; j <= 1; j++) {
@@ -91,6 +91,12 @@ function reportMarker() {
     ptpreportbounds.extend(ptpreportmarker.getPosition());
   }
   ptpreportmap.setZoom(12);
+  ptpreportmap.fitBounds(ptpreportbounds);
+}
+
+function reportMarker() {
+  document.querySelector(".ptppopup").style.display = "block";
+  // adjusting the bounds for the report map when installation report button is clicked
   ptpreportmap.fitBounds(ptpreportbounds);
 
   // populating the inner html of elevation chart to the report elevation chart
@@ -154,7 +160,7 @@ function inputMarker() {
         latlongarr.push(e.value.split(","));
       });
       ptpbounds = new google.maps.LatLngBounds();
-      // ptpreportbounds = new google.maps.LatLngBounds();
+      ptpreportbounds = new google.maps.LatLngBounds();
       for (i = 0; i < latlongarr.length; i++) {
         // Marker in the main map
         ptpmarker = new google.maps.Marker({
@@ -164,10 +170,18 @@ function inputMarker() {
         });
         ptpmap.setZoom(12);
         ptpbounds.extend(ptpmarker.getPosition());
+        // Marker in the report map
+        ptpreportmarker = new google.maps.Marker({
+          map: ptpreportmap,
+          position: new google.maps.LatLng(latlongarr[i][0], latlongarr[i][1]),
+        });
+        ptpreportbounds.extend(ptpreportmarker.getPosition());
         // updating the arrays for map and report map
         ptpmarkersarr.push(ptpmarker);
+        reportMarkerArr.push(ptpreportmarker);
         // add listener to redraw the polyline when markers position change
         ptpmarker.addListener("dragend", function () {
+          addMarkerToReport();
           addAddress();
         });
       }
