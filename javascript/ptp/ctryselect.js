@@ -19,6 +19,7 @@ function ptpctryChange() {
   }
 
   // document.querySelector(".elevation-chart").style.display = "none";
+  $(".editPencil").hide();
   document.getElementById("ptpchart").innerHTML = "";
 
   // Entering the Country details in the Installation Report

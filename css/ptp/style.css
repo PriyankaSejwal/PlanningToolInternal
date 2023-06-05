@@ -203,7 +203,7 @@ strong {
 
 /* Edit option for the elevation chart */
 .editPencil {
-  display: block;
+  display: none;
   padding: 1px 15px 5px !important;
 }
 #editObstruction {

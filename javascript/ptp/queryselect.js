@@ -78,6 +78,7 @@ document.getElementById("ptpresetLink").addEventListener("click", function () {
   ptpfrequencydata();
 
   // document.querySelector(".elevation-chart").style.display = "none";
+  $(".editPencil").hide();
   document.getElementById("ptpchart").innerHTML = "";
 
   /* if external antenna selected when planning extAnt class has been added to the 

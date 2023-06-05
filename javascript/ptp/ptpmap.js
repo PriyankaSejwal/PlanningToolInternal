@@ -386,6 +386,7 @@ function plotptpElevation({ results }) {
 }
 
 function elevationchartptp() {
+  $(".editPencil").show();
   var dist = parseFloat(document.getElementById("linkDistance").innerHTML);
   var rad = parseFloat(document.getElementById("fresnelRadius").innerHTML); // minor axis radius fresnel radius
   var ht1 = parseFloat(document.getElementById("aheight1").value);
