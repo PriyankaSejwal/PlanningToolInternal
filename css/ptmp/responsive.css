@@ -413,3 +413,28 @@
     height: 610px;
   }
 }
+
+@media screen and (max-width: 500px) {
+  .align-center {
+    padding: 15px 18px !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .align-center {
+    padding: 15px 80px !important;
+  }
+  .btn-group {
+    display: inline-grid !important;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .align-center {
+    padding: 15px 35px !important;
+  }
+
+  .btn-group {
+    display: inline-grid !important;
+  }
+}

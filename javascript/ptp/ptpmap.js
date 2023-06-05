@@ -232,6 +232,7 @@ function addAddress() {
 }
 
 // This function adds the address for the co-ordinates
+
 // function addAddress() {
 //   var ctry = document.getElementById("ptpctryCode");
 //   var selectedctry = ctry.options[ctry.selectedIndex].innerHTML;
