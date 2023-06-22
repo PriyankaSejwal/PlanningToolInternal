@@ -68,9 +68,9 @@ ul.dropdown-menu a:hover {
   color: #6ba3b7;
 }
 
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 1500px) {
   .container-fluid {
-    padding-top: 85px;
+    padding-top: 110px;
   }
 }
 
@@ -80,8 +80,8 @@ ul.dropdown-menu a:hover {
   }
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 300px) {
   .container-fluid {
-    padding-top: 110px;
+    padding-top: 85px;
   }
 }

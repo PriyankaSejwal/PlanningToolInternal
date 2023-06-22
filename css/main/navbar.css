@@ -367,7 +367,7 @@ button {
 }
 @media screen and (max-width: 300px) {
   .logo a img {
-    width: 30%;
+    width: 100%;
     transform: none;
     margin: 5px 0;
   }

@@ -178,7 +178,7 @@
 }
 @media screen and (max-width: 300px) {
   .logo a img {
-    width: 30%;
+    width: 100%;
     transform: none;
     margin: 5px 0;
   }
@@ -191,7 +191,7 @@
 @media screen and (max-width: 300px) {
   .mainmenu {
     width: 70%;
-    margin-top: 18px;
+    margin-top: 11px;
   }
 }
 
@@ -436,5 +436,18 @@
 
   .btn-group {
     display: inline-grid !important;
+  }
+}
+
+/* when screen sise is 750 to 992 the row where we have option to select country, go back and reset
+the font size is changed for better display */
+@media screen and (max-width: 992px) and (min-width: 750px) {
+  #ptmpPage .btn,
+  #ptmpPage .btn a {
+    font-size: 25px;
+  }
+  #ptmpPage #ctryCode {
+    font-size: 25px;
+    height: 49px;
   }
 }
